@@ -1,24 +1,23 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
-from matplotlib.animation import FuncAnimation
+# from matplotlib.animation import FuncAnimation
 
 
 # steps for animation 10 ms (Zyklus: 0 - 200ms + 300ms Pause = 500ms gesamter Zyklus)
 # Cells look to neighbour and start contracting if neighbour has reached its mV
 # no-heart-cell || heart-cell
 
-# make these smaller to increase the resolution
+# scale image and matrix
 dx, dy = 0.05, 0.05
-
 x = np.arange(0, 67, dx)
 y = np.arange(0, 49, dy)
 X, Y = np.meshgrid(x, y)
+extent = np.min(X), np.max(X), np.min(Y), np.max(Y)
 
 rows = 49
 columns = 67
 image = plt.imread("heart.png")
-extent = np.min(X), np.max(X), np.min(Y), np.max(Y)
+
 
 class Cell:
     state = 0
@@ -35,6 +34,8 @@ class Cell:
 
 class Heart:
     heart = []
+
+    # define cell types
     heart_cell = Cell(1, 30)
     no_heart_cell = Cell(0, 10)
     muscle_cell = Cell(1, 10)
@@ -43,8 +44,6 @@ class Heart:
     his_bundle = Cell(1, 10)
     tawara = Cell(1, 10)
     purkinje = Cell(1, 10)
-
-
 
     def __init__(self):  # constructor
         self.heart = self.init_heart()
@@ -68,7 +67,6 @@ class Heart:
 heart = Heart()
 
 # plt.clf() clears window
-
 
 print(heart.heart)
 plt.imshow(image, extent=extent)
