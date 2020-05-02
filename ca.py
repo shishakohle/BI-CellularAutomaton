@@ -20,8 +20,23 @@ image = plt.imread("heart.png")
 
 
 class Cell:
-    state = 0
-    mV = 0
+    state = 0 # aktiviert, refrektär oder aktivierbar
+    # potential = -70  # Startpotential
+    # frequenz = 0  # Wann soll Zelle wieder beginnen potential aufzubauen
+    # schwellen_potential = -40  # Wann fangt Zelle an Spannung weiterzugeben
+    ausbreitungs_geschwindigkeit = 0  # wie lange braucht Zelle von 0 bis 1
+    dauer_erregung = 200  # für alle Zellen gleich 20 Zeiteinheiten (200 ms)
+    refrektaer_zeit = 300  # für alle Zellen gleich 30 Zeiteinheiten (300ms)
+
+    # Sinusknoten hat potential von -70mV zu Beginn, und über Zeit bekommt er immer mehr mV bis
+    # hin zu -40mV (schwellenpotential) und dann ist sein state 1
+
+    # Muskelzellen haben entweder state 0 oder 1
+
+    class Polarization:
+        POLARIZED = 1  # aktivierbar - sobald nachbar aktiviert -> von 1 auf 2 in ausbreitungs_geschwindigkeit
+        DEPOLARIZED = 2  # aktiviert - solange wie dauer_erregung
+        REFRACTORY = 3  # refrektär - solange wie refrektaerzeit
 
     def __init__(self, state, mV):  # constructor
         self.state = state
@@ -29,7 +44,15 @@ class Cell:
 
     def get_state(self):
         # print(self.state)
-        return self.state;
+        return self.state
+
+
+    def trigger(self):  # wird aufgerufen wenn Nachbarzelle aktiviert und man selbst state 1 hat; für Sinusknoten rufen wir es alle 1000ms auf.
+        # state = 1
+        # innerhalb von meiner ausbreitungs_geschwindigkeit gehe ich auf 2
+        # für dauer_erregung bin ich 2 und dann gehe ich auf 3
+        # für refrektaerzeit bin ich auf 3 und dann gehe ich wieder auf 1 und warte
+        return
 
 
 class Heart:
@@ -57,6 +80,7 @@ class Heart:
     def init_heart(self):
         matrix = []
 
+        # evtl als CSV einlesen?
         for i in range(int(rows)):  # loop as many times as variable rows
             r = []  # create a row list
             for j in range(int(columns)):  # loop as many times as variable columns
