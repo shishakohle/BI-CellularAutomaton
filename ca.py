@@ -18,6 +18,10 @@ rows = 49  # the resolution of the y-axis in a carthesian coordinate system
 columns = 67  # the resolution of the x-axis in a carthesian coordinate system
 image = plt.imread("heart.png")
 
+frequency = range(0, 1000, 10)
+#for step in frequency:
+#    print(step)
+#print(frequency[2])
 
 class Cell:
     state = 0 # aktiviert, refrektär oder aktivierbar
@@ -47,11 +51,19 @@ class Cell:
         return self.state
 
 
-    def trigger(self):  # wird aufgerufen wenn Nachbarzelle aktiviert und man selbst state 1 hat; für Sinusknoten rufen wir es alle 1000ms auf.
-        # state = 1
-        # innerhalb von meiner ausbreitungs_geschwindigkeit gehe ich auf 2
-        # für dauer_erregung bin ich 2 und dann gehe ich auf 3
-        # für refrektaerzeit bin ich auf 3 und dann gehe ich wieder auf 1 und warte
+    def trigger(self,time):  #time wäre index von zeitpunkt von range frequency (1000 steps zu je 10) wo gerade zelle getriggered
+        # wird aufgerufen wenn Nachbarzelle aktiviert und man selbst state 1 hat; für Sinusknoten rufen wir es alle 1000ms auf.
+        # only gets triggered when neighbor is triggered and cell itself is polarized (state = 1)
+        # wait for time (ausbreitungs_geschwindigkeit)
+        if(frequency == frequency[time+self.ausbreitungs_geschwindigkeit]):
+            state = 2
+            # innerhalb von meiner ausbreitungs_geschwindigkeit gehe ich auf 2
+        if (frequency == frequency[time + self.ausbreitungs_geschwindigkeit+self.dauer_erregung]):
+            state = 3
+            # für dauer_erregung bin ich 2 und dann gehe ich auf 3
+        if (frequency == frequency[time + self.ausbreitungs_geschwindigkeit+self.dauer_erregung+self.refrektaer_zeit]):
+            state = 1
+            # für refrektaerzeit bin ich auf 3 und dann gehe ich wieder auf 1 und warte
         return
 
 
