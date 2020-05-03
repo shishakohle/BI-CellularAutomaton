@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 # from matplotlib.animation import FuncAnimation
-
+import csv
 
 # steps for animation 10 ms (Zyklus: 0 - 200ms + 300ms Pause = 500ms gesamter Zyklus)
 # Cells look to neighbour and start contracting if neighbour has reached its mV
@@ -73,33 +73,42 @@ class Heart:
     # TODO: which paramters for the Cell() constructor?
     cells = [[Cell(0,10) for y in range(rows)] for x in range(columns)]
 
-    # define cell types
-    heart_cell = Cell(1, 30)
-    no_heart_cell = Cell(0, 10)
-    muscle_cell = Cell(1, 10)
-    sinus_knot = Cell(1, 10)
-    av_knot = Cell(1, 10)
-    his_bundle = Cell(1, 10)
-    tawara = Cell(1, 10)
-    purkinje = Cell(1, 10)
-
     def __init__(self):  # constructor
         self.heart = self.init_heart()
         # TODO: these are for test purposes only
-        print("The x dimension of cells is:", len(self.cells))
-        print("The y dimension of cells is:", len(self.cells[1]))
+       # print("The x dimension of cells is:", len(self.cells))
+        #print("The y dimension of cells is:", len(self.cells[1]))
 
     def init_heart(self):
+        with open("heart.csv", 'r') as f:
+            heart = list(csv.reader(f, delimiter=";"))
+
         matrix = []
 
-        # evtl als CSV einlesen?
         for i in range(int(rows)):  # loop as many times as variable rows
             r = []  # create a row list
             for j in range(int(columns)):  # loop as many times as variable columns
-                if i == 13 and j >= 16 and j <= 17 or i >= 14 and i <= 15 and j >= 15 and j <= 17:
-                    r.append(self.sinus_knot.get_state())
-                else:
-                    r.append(self.no_heart_cell.get_state()) # TODO: cells must be copied, not referenced
+                if heart[i][j] == '0':
+                    no_heart_cell = Cell(0, 10)
+                    r.append(no_heart_cell.get_state())
+                elif heart[i][j] == '1':
+                    muscle_cell = Cell(1, 10)
+                    r.append(muscle_cell.get_state())
+                elif heart[i][j] == '2':
+                    sinus_knot = Cell(1, 10)
+                    r.append(sinus_knot.get_state())
+                elif heart[i][j] == '3':
+                    av_knot = Cell(1, 10)
+                    r.append(av_knot.get_state())
+                elif heart[i][j] == '4':
+                    his_bundle = Cell(1, 10)
+                    r.append(his_bundle.get_state())
+                elif heart[i][j] == '5':
+                    tawara = Cell(1, 10)
+                    r.append(tawara.get_state())
+                elif heart[i][j] == '6':
+                    purkinje = Cell(1, 10)
+                    r.append(purkinje.get_state())
 
             matrix.append(r)  # add the rows filled with columns to existing matrix list
 
@@ -134,7 +143,6 @@ heart = Heart()
 
 # plt.clf() clears window
 
-#print(heart.heart)
 plt.imshow(image, extent=extent)
 plt.imshow(heart.heart, extent=extent, cmap="Reds", alpha= 0.7)
 #plt.imshow(heart.getState(), extent=extent, cmap="Reds", alpha= 0.7)
