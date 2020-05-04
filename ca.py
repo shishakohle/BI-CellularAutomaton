@@ -54,18 +54,35 @@ class Cell:
     def trigger(self,time):  #time wäre index von zeitpunkt von range frequency (1000 steps zu je 10) wo gerade zelle getriggered
         # wird aufgerufen wenn Nachbarzelle aktiviert und man selbst state 1 hat; für Sinusknoten rufen wir es alle 1000ms auf.
         # only gets triggered when neighbor is triggered and cell itself is polarized (state = 1)
-        # wait for time (ausbreitungs_geschwindigkeit)
-        if(frequency == frequency[time+self.ausbreitungs_geschwindigkeit]):
-            state = 2
-            # innerhalb von meiner ausbreitungs_geschwindigkeit gehe ich auf 2
-        if (frequency == frequency[time + self.ausbreitungs_geschwindigkeit+self.dauer_erregung]):
-            state = 3
-            # für dauer_erregung bin ich 2 und dann gehe ich auf 3
-        if (frequency == frequency[time + self.ausbreitungs_geschwindigkeit+self.dauer_erregung+self.refrektaer_zeit]):
-            state = 1
-            # für refrektaerzeit bin ich auf 3 und dann gehe ich wieder auf 1 und warte
-        return
+        # wait for time (ausbreitungs_geschwindigkeit) --> außerhalb einbauen --> zB rechter Vorhof 14 Schritte (wenn eine Ebene pro Schritt) -->
+        # würde aber 140 ms statt 50 ms dauern --> ausbreitungsgeschwindigkeit = 0.3 --> beschleunigung --> oder einfach steps in 1er schritte
+        self.ausbreitungs_geschwindigkeit = 0.3
+        trigger = self.ausbreitungs_geschwindigkeit * 10
+        start = time
+        stop = start +self.dauer_erregung+self.refrektaer_zeit + 100#+ self.ausbreitungs_geschwindigkeit
+        trigger_time = range(start,stop,1)
+        i = 1
 
+        while(i):
+        #self.state = 2 #ist schon erregt
+            for step in trigger_time:
+                #print(step)
+                if(i == 1):
+                    if(step < start + trigger):
+                        self.state = 1
+            # innerhalb von meiner ausbreitungs_geschwindigkeit gehe ich auf 2
+                    elif(step >= start + trigger and step <= start + trigger+self.dauer_erregung):
+                        self.state = 2
+            # für dauer_erregung bin ich 2 und dann gehe ich auf 3
+                    elif (step > start + trigger+self.dauer_erregung and step <= start + trigger+self.dauer_erregung+self.refrektaer_zeit):
+                        self.state = 3
+                    else:
+                        self.state = 1
+                        i = 0
+                else:
+                    break
+            # für refrektaerzeit bin ich auf 3 und dann gehe ich wieder auf 1 und warte
+                #print(self.state)
 
 class Heart:
     heart = []
@@ -149,3 +166,10 @@ plt.imshow(heart.heart, extent=extent, cmap="Reds", alpha= 0.7)
 plt.title("Cellular Automata of the Heart")
 # TODO: remove axis labels
 plt.show()
+
+#test anna
+#for step in frequency:
+#    if(step == 10):
+#        cell_test = Cell(1,-70)
+#        cell_test.trigger(step)
+#        print("stop")
