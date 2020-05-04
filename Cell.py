@@ -4,6 +4,21 @@ class Cell:
     # frequenz = 0  # Wann soll Zelle wieder beginnen potential aufzubauen
     # schwellen_potential = -40  # Wann fangt Zelle an Spannung weiterzugeben
     ausbreitungs_geschwindigkeit = 0  # wie lange braucht Zelle von 0 bis 1
+        # rechter vorhof: 13 schritte - 50 ms --> alle 4 ms
+        # linker vorhof: 31 schritte - 85 ms --> alle 3 ms
+        # bis AV: 17 Schritte - 50 ms --> alle 3 ms (gleich wie linker Vorhof)
+        # AV Knoten: 2 Schritte - 70 ms --> 35 ms
+        # His Bündel: fängt erst an, wenn alle AV Knoten zellen aktiviert sind
+                    # 2 Schrotte - 5 ms --> 3 ms
+        # Tawaraschenkel: 10 Schritte - 15 ms --> 2 ms
+        # Purkinje Fasern: 38 Schritte - 5 ms --> zu schnell --> schrittweise mit Nachbar würd zu lang dauern
+                    # sobald eine Puriknje Faser Zelle aktiviert --> alle gleichzeitig aktivieren? innerhalb 5 ms (Schritte)?
+                    # bei Ausbreitung Myokard "zu viel Zeit" von dort "hernehmen" damit schrittweise auf Nachbarzelle sich ausgeht
+                    # (langsamer als eigentlich wäre, aber verglichen immer noch sehr schnell)
+                    # --> 1 ms
+        # Myokard: 9 Schritte - 75 ms bis alles aktivert (-33 ms für Purkinje Fasern "verwendet") = 42 ms --> 5 ms
+                    # Erregung beginnt erst, wenn alle Purkinje Fasern erregt sind
+
     dauer_erregung = 200  # für alle Zellen gleich 20 Zeiteinheiten (200 ms)
     refrektaer_zeit = 300  # für alle Zellen gleich 30 Zeiteinheiten (300ms)
 
@@ -25,8 +40,7 @@ class Cell:
         # print(self.state)
         return self.state
 
-
-    def trigger(self,time):  #time wäre index von zeitpunkt von range frequency (1000 steps zu je 10) wo gerade zelle getriggered
+    def trigger(self,time): #time wäre index von zeitpunkt von range frequency (1000 steps zu je 10) wo gerade zelle getriggered
         # wird aufgerufen wenn Nachbarzelle aktiviert und man selbst state 1 hat; für Sinusknoten rufen wir es alle 1000ms auf.
         # only gets triggered when neighbor is triggered and cell itself is polarized (state = 1)
         # wait for time (ausbreitungs_geschwindigkeit) --> außerhalb einbauen --> zB rechter Vorhof 14 Schritte (wenn eine Ebene pro Schritt) -->
@@ -37,7 +51,14 @@ class Cell:
         stop = start +self.dauer_erregung+self.refrektaer_zeit + 100#+ self.ausbreitungs_geschwindigkeit
         trigger_time = range(start,stop,1)
         i = 1
-
+        #nur wenn zustand 1 aktiviert --> sonst gleich wida beendet
+        #einzige wo 1 auf 2 auf 3 wechseln
+        #wenn wida in trigger function time step von letztem mal vergleichen, wieviel zeit vergangen --> zustand geändert
+        #farblicher verlauf --> von e.g. 3 ms von status 1 auf 2 --> 1/3
+        #zustandsänderung = refresh
+        #timestamp - wann zustand betreten (step counter)
+        #wieviele schritte bin ich schon in diesem zustand (altersbedingung) --> nach so und so vielen schritten ändere zustand
+        #farben tabelle anzeigen der unterschiedlichen strukturen
         while(i):
         #self.state = 2 #ist schon erregt
             for step in trigger_time:
