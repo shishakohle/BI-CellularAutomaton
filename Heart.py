@@ -4,8 +4,6 @@ from Cell import Celltype
 import csv
 
 
-
-
 class Heart:
     heart = []
     rows = 49  # the resolution of the y-axis in a carthesian coordinate system
@@ -38,8 +36,8 @@ class Heart:
                     right_atrium = Cell(Celltype.RIGHT_ATRIUM)
                     r.append(right_atrium.get_color_state())
                 elif heart[i][j] == '2':
-                    sinus_knot = Cell(1, 1)
-                    r.append(Celltype.SINUS_KNOT)
+                    sinus_knot = Cell(Celltype.SINUS_KNOT)
+                    r.append(sinus_knot.get_color_state())
                 elif heart[i][j] == '3':
                     av_knot = Cell(Celltype.AV_KNOT)
                     r.append(av_knot.get_color_state())
