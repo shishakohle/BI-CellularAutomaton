@@ -84,4 +84,12 @@ class Heart:
         # TODO
         # step for sine-knot
         # TODO
+        # comments Anna:
+        # 1) alle Sinusknotenzellen gleichzeitig im Zeitpunkt 1 auf getriggered
+        # 2) Vorhof (links und rechts) beginnt sich gleicheitig vom Sinusknoten aus zu depolarizen (isTriggered) und gibt Impuls an Nachbarzellen weiter
+        #    2.1) Wenn meine Nachbarzelle depolarized ist und ich polarizable --> isTriggered
+        # 3) Vorhof darf nicht His-Bündel aktivieren, sondern nur AV Knoten
+        # 4) Erst wenn alle AV-Knoten Zellen vollständig geladen (depolarized) sind, dürfen Vorhofzellen (links) an benachbarte Hisbündelzellen weitergeben
+        # 5) Normale Weitergabe an Nachbarzellen für Tawara und Purkinje
+        # 6) Myokard darf sich erst anfangen lassen von Nachbarzellen zu aktivieren, wenn alle Purkinje Fasern auf depolarized (3) sind
         return
