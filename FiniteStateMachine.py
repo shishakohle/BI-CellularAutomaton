@@ -49,16 +49,18 @@ See doc for UML notation.
 class StateName:      # (ST*)
     POLARIZED = 1     # (ST1)
     DEPOLARIZING = 2  # (ST2)
-    REFRACTORY = 3    # (ST3)
+    DEPOLARIZED = 3   # (ST3)
+    REFRACTORY = 4    # (ST4)
 
 
 class FiniteStateMachine:
 
     # set constants and thresholds in constructor, init state machine with initial state
 
-    def __init__(self, duration_depolarization_phase, duration_refractory_phase):  # (THR*) and (ST*.init)
+    def __init__(self, duration_depolarization_phase, duration_depolarized_phase, duration_refractory_phase):  # (THR*) and (ST*.init)
         self.duration_depolarization_phase = duration_depolarization_phase         # (THR1)
-        self.duration_refractory_phase     = duration_refractory_phase             # (THR2)
+        self.duartion_depolarized_phase    = duration_depolarized_phase            # (THR2)
+        self.duration_refractory_phase     = duration_refractory_phase             # (THR3)
         self.currentState = self.State()                                           # (ST*.init)
 
     # bundle up state with state name and state variables in an inner class
@@ -84,14 +86,21 @@ class FiniteStateMachine:
             if (time - self.currentState.timestamp) >=\
                     self.duration_depolarization_phase:               # (EV2)
                 # complete transition by entering new state
-                self.currentState.stateName = StateName.REFRACTORY    # (ST3)
+                self.currentState.stateName = StateName.DEPOLARIZED   # (ST3)
                 self.currentState.timestamp = time                    # (ST3.E1)
 
-        elif self.currentState == StateName.REFRACTORY:               # (TR3): (ST3) --> ?
+        elif self.currentState == StateName.DEPOLARIZED:             # (TR3): (ST3) --> ?
             if (time - self.currentState.timestamp) >=\
-                    self.duration_refractory_phase:                   # (EV3)
+                    self.duration_depolarizated_phase:               # (EV3)
                 # complete transition by entering new state
-                self.currentState.stateName = StateName.REFRACTORY    # (ST1)
+                self.currentState.stateName = StateName.REFRACTORY    # (ST4)
+                self.currentState.timestamp = time                    # (ST4.E1)
+
+        elif self.currentState == StateName.REFRACTORY:               # (TR4): (ST4) --> ?
+            if (time - self.currentState.timestamp) >=\
+                    self.duration_refractory_phase:                   # (EV4)
+                # complete transition by entering new state
+                self.currentState.stateName = StateName.POLARIZED    # (ST1)
 
         # also return refreshed state to do the calling instance a favor
 

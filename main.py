@@ -21,7 +21,7 @@ extent = np.min(X), np.max(X), np.min(Y), np.max(Y)
 
 image = plt.imread("heart.png")
 
-frequency = range(0, 1000, 10)
+frequency = range(0, 1000, 1)
 #for step in frequency:
 #    print(step)
 #print(frequency[2])
