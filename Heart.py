@@ -1,34 +1,30 @@
 from Cell import Cell
 from Cell import Celltype
-# from matplotlib.animation import FuncAnimation
 import csv
 
 
 class Heart:
-    heart = []
-    rows = 49  # the resolution of the y-axis in a carthesian coordinate system
-    columns = 67  # the resolution of the x-axis in a carthesian coordinate system
-    # initialise the cell matrix with cells that are "no heart cells"
-    # TODO: which paramters for the Cell() constructor?
-    # TODO cells = [[Cell(0, 10) for y in range(self.rows)] for x in range(self.columns)]
-   # cells = [[Cell(0, 10) for y in range(49)] for x in range(67)]
-
     def __init__(self):  # constructor
-        self.heart = self.init_heart()
-        # TODO: these are for test purposes only
+        # TODO read count of rows and columns from CSV directly
+        self.rows = 49  # the resolution of the y-axis in a carthesian coordinate system
+        self.columns = 67  # the resolution of the x-axis in a carthesian coordinate system
+        self.heart = self.init_matrix()
 
-    # print("The x dimension of cells is:", len(self.cells))
-    # print("The y dimension of cells is:", len(self.cells[1]))
-
-    def init_heart(self):
-        with open("heart.csv", 'r') as f:
-            heart = list(csv.reader(f, delimiter=";"))
-
+    def init_matrix(self):
         matrix = []
 
+        with open("heart.csv", 'r') as f:  # TODO filename as function argument
+            heart = list(csv.reader(f, delimiter=";"))  # TODO check: what if open() has failed for some reason?
+
+        # TODO read count of rows and columns from CSV directly
+
         for i in range(int(self.rows)):  # loop as many times as variable rows
+
             r = []  # create a row list
+
             for j in range(int(self.columns)):  # loop as many times as variable columns
+
+                # TODO replace the if-elif tree by a switcher. Such a switcher already exists in Cell.
                 if heart[i][j] == '0':
                     no_heart_cell = Cell(Celltype.NO_HEART_CELL)
                     r.append(no_heart_cell.get_color_state())
@@ -61,16 +57,13 @@ class Heart:
 
         return matrix
 
-    def init(self):
-        # TODO: Here, use self.placeCell() to create the heart cell matrix
-        return
-
     def placeCell(self, cell, x, y):
         # TODO: check x and y for validity (IndexError: list index out of range)
         self.cells[x][y] = cell  # TODO: some of the cells must be "copied", not referenced!
         return
 
-    def getState(self):
+    # TODO: Frage von Ingo: Benötigen wir diese funktion noch?
+    def getState(self):  # returns a matrix that indicates the current state of each heart cell
         state = []
         for i in range(int(self.columns)):  # loop as many times as variable rows
             state.append([])
@@ -78,13 +71,13 @@ class Heart:
                 state[i].append(self.cells[i][j].get_state())
         return state
 
-    def step(self):  # one step transits the heard simulation 10ms ahead
+    def step(self):  # one step transits the heart simulation 1 millisecond ahead
         # step all (cells except sine-knot) according to their neighbours (Moore neighbourhood)
         # TODO
         # step for sine-knot
         # TODO
         # comments Anna:
-        # 1) alle Sinusknotenzellen gleichzeitig im Zeitpunkt 1 auf getriggered
+        # 1) alle Sinusknotenzellen gleichzeitig im Zeitpunkt 0 auf getriggered
         # 2) Vorhof (links und rechts) beginnt sich gleicheitig vom Sinusknoten aus zu depolarizen (isTriggered) und gibt Impuls an Nachbarzellen weiter
         #    2.1) Wenn meine Nachbarzelle depolarized ist und ich polarizable --> isTriggered
         # 3) Vorhof darf nicht His-Bündel aktivieren, sondern nur AV Knoten
