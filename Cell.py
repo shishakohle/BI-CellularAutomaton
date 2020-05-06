@@ -1,5 +1,17 @@
+class Celltype:
+    NO_HEART_CELL = 0
+    RIGHT_ATRIUM = 1
+    SINUS_KNOT = 2
+    AV_KNOT = 3
+    HIS_BUNDLE = 4
+    TAWARA = 5
+    PURKINJE = 6
+    LEFT_ATRIUM = 7
+    MYOKARD = 8
+
+
 class Cell:
-    color_state = 0
+    color_state= 0
     # potential = -70  # Startpotential
     # frequenz = 0  # Wann soll Zelle wieder beginnen potential aufzubauen
     # schwellen_potential = -40  # Wann fangt Zelle an Spannung weiterzugeben
@@ -21,6 +33,17 @@ class Cell:
 
     dauer_erregung = 200  # für alle Zellen gleich 20 Zeiteinheiten (200 ms)
     refrektaer_zeit = 300  # für alle Zellen gleich 30 Zeiteinheiten (300ms)
+    ausbreitungs_geschwindigkeit = {
+        Celltype.NO_HEART_CELL: 0,
+        Celltype.RIGHT_ATRIUM: 4,
+        Celltype.LEFT_ATRIUM: 3,
+        Celltype.SINUS_KNOT: 1,
+        Celltype.MYOKARD: 5,
+        Celltype.PURKINJE: 1,
+        Celltype.TAWARA: 2,
+        Celltype.HIS_BUNDLE: 3,
+        Celltype.AV_KNOT: 35
+    }
 
     # Sinusknoten hat potential von -70mV zu Beginn, und über Zeit bekommt er immer mehr mV bis
     # hin zu -40mV (schwellenpotential) und dann ist sein state 1
@@ -32,9 +55,9 @@ class Cell:
         DEPOLARIZED = 2  # aktiviert - solange wie dauer_erregung
         REFRACTORY = 3  # refrektär - solange wie refrektaerzeit
 
-    def __init__(self, color_state, ausbreitungs_geschwindigkeit):  # constructor
-        self.color_state = color_state
-        self.ausbreitungs_geschwindigkeit = ausbreitungs_geschwindigkeit
+    def __init__(self, cell_type):  # constructor
+        self.cell_type = cell_type
+        self.ausbreitungs_geschwindigkeit(cell_type)
 
     def get_color_state(self):
         # print(self.state)

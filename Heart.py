@@ -1,7 +1,9 @@
-from Cell import Cell
-
+import Cell
+from Cell import Celltype
 # from matplotlib.animation import FuncAnimation
 import csv
+
+
 
 
 class Heart:
@@ -30,33 +32,32 @@ class Heart:
             r = []  # create a row list
             for j in range(int(self.columns)):  # loop as many times as variable columns
                 if heart[i][j] == '0':
-                    no_heart_cell = Cell(0, 0)
+                    no_heart_cell = Cell(Celltype.NO_HEART_CELL)
                     r.append(no_heart_cell.get_color_state())
                 elif heart[i][j] == '1':
-                    right_atrium = Cell(1, 4)
+                    right_atrium = Cell(Celltype.RIGHT_ATRIUM)
                     r.append(right_atrium.get_color_state())
                 elif heart[i][j] == '2':
                     sinus_knot = Cell(1, 1)
-                    r.append(sinus_knot.get_color_state())
+                    r.append(Celltype.SINUS_KNOT)
                 elif heart[i][j] == '3':
-                    av_knot = Cell(1, 3)
+                    av_knot = Cell(Celltype.AV_KNOT)
                     r.append(av_knot.get_color_state())
                 elif heart[i][j] == '4':
-                    his_bundle = Cell(1, 3)
+                    his_bundle = Cell(Celltype.HIS_BUNDLE)
                     r.append(his_bundle.get_color_state())
                 elif heart[i][j] == '5':
-                    tawara = Cell(1, 2)
+                    tawara = Cell(Celltype.TAWARA)
                     r.append(tawara.get_color_state())
                 elif heart[i][j] == '6':
-                    purkinje = Cell(1, 1)
+                    purkinje = Cell(Celltype.PURKINJE)
                     r.append(purkinje.get_color_state())
                 elif heart[i][j] == '7':
-                    left_atrium = Cell(1, 3)
+                    left_atrium = Cell(Celltype.LEFT_ATRIUM)
                     r.append(left_atrium.get_color_state())
                 elif heart[i][j] == '8':
-                    myokard = Cell(1, 5)
+                    myokard = Cell(Celltype.MYOKARD)
                     r.append(myokard.get_color_state())
-
 
             matrix.append(r)  # add the rows filled with columns to existing matrix list
 
