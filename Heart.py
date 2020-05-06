@@ -27,7 +27,7 @@ class Heart:
                 # TODO replace the if-elif tree by a switcher. Such a switcher already exists in Cell.
                 if heart[i][j] == '0':
                     no_heart_cell = Cell(Celltype.NO_HEART_CELL)
-                    r.append(no_heart_cell.get_color_state())
+                    r.append(no_heart_cell.get_color_state())  # TODO pls append the Cell Object, not an Integer
                 elif heart[i][j] == '1':
                     right_atrium = Cell(Celltype.RIGHT_ATRIUM)
                     r.append(right_atrium.get_color_state())
@@ -71,7 +71,7 @@ class Heart:
                 state[i].append(self.cells[i][j].get_state())
         return state
 
-    def step(self):  # one step transits the heart simulation 1 millisecond ahead
+    def step(self):  # one step transits the heart simulation 1 time step ahead
         # step all (cells except sine-knot) according to their neighbours (Moore neighbourhood)
         # TODO
         # step for sine-knot
@@ -84,4 +84,9 @@ class Heart:
         # 4) Erst wenn alle AV-Knoten Zellen vollständig geladen (depolarized) sind, dürfen Vorhofzellen (links) an benachbarte Hisbündelzellen weitergeben
         # 5) Normale Weitergabe an Nachbarzellen für Tawara und Purkinje
         # 6) Myokard darf sich erst anfangen lassen von Nachbarzellen zu aktivieren, wenn alle Purkinje Fasern auf depolarized (3) sind
-        return
+
+        for cellrow in self.heart:
+            for cell in cellrow:
+                cell.trigger()
+                cell.step()
+                # TODO will be continued as soon as the "no Objects of type Cell in heart matrix" issue is resolved

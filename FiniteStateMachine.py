@@ -73,7 +73,8 @@ class FiniteStateMachine:
 
     # calculate the next state based on the current state and the gradient variables
 
-    def refreshState(self, time, isTriggered):                        # (GV*)
+    def refreshState(self, step, isTriggered):                        # (GV*)
+        time = step  # TODO rename all uses of time by step
 
         # check all events (EV*) for an potential transition (TR*)
 
