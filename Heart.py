@@ -1,4 +1,4 @@
-import Cell
+from Cell import Cell
 from Cell import Celltype
 # from matplotlib.animation import FuncAnimation
 import csv
@@ -11,7 +11,7 @@ class Heart:
     # initialise the cell matrix with cells that are "no heart cells"
     # TODO: which paramters for the Cell() constructor?
     # TODO cells = [[Cell(0, 10) for y in range(self.rows)] for x in range(self.columns)]
-    cells = [[Cell(0, 10) for y in range(49)] for x in range(67)]
+   # cells = [[Cell(0, 10) for y in range(49)] for x in range(67)]
 
     def __init__(self):  # constructor
         self.heart = self.init_heart()

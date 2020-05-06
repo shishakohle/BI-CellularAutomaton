@@ -11,11 +11,32 @@ class Celltype:
 
 
 class Cell:
-    color_state= 0
+    color_state_polarized = {  # aktivierbar
+        Celltype.NO_HEART_CELL: 0,
+        Celltype.RIGHT_ATRIUM: 4,
+        Celltype.LEFT_ATRIUM: 3,
+        Celltype.SINUS_KNOT: 1,
+        Celltype.MYOKARD: 5,
+        Celltype.PURKINJE: 1,
+        Celltype.TAWARA: 2,
+        Celltype.HIS_BUNDLE: 3,
+        Celltype.AV_KNOT: 4
+    }
+    color_state_depolarized = {  # aktiviert
+        Celltype.NO_HEART_CELL: 0,
+        Celltype.RIGHT_ATRIUM: 4,
+        Celltype.LEFT_ATRIUM: 3,
+        Celltype.SINUS_KNOT: 1,
+        Celltype.MYOKARD: 5,
+        Celltype.PURKINJE: 1,
+        Celltype.TAWARA: 2,
+        Celltype.HIS_BUNDLE: 3,
+        Celltype.AV_KNOT: 4
+    }
     # potential = -70  # Startpotential
     # frequenz = 0  # Wann soll Zelle wieder beginnen potential aufzubauen
     # schwellen_potential = -40  # Wann fangt Zelle an Spannung weiterzugeben
-    ausbreitungs_geschwindigkeit = 0  # wie lange braucht Zelle von 0 bis 1
+    #ausbreitungs_geschwindigkeit = 0  # wie lange braucht Zelle von 0 bis 1
         # rechter vorhof: 13 schritte - 50 ms --> alle 4 ms
         # linker vorhof: 31 schritte - 85 ms --> alle 3 ms
         # bis AV: 17 Schritte - 50 ms --> alle 3 ms (gleich wie linker Vorhof)
@@ -57,11 +78,11 @@ class Cell:
 
     def __init__(self, cell_type):  # constructor
         self.cell_type = cell_type
-        self.ausbreitungs_geschwindigkeit(cell_type)
+        self.ausbreitungs_geschwindigkeit[cell_type]
 
     def get_color_state(self):
         # print(self.state)
-        return self.color_state
+        return self.color_state_polarized[self.cell_type]
 
     def trigger(self,time): #time wäre index von zeitpunkt von range frequency (1000 steps zu je 10) wo gerade zelle getriggered
         # wird aufgerufen wenn Nachbarzelle aktiviert und man selbst state 1 hat; für Sinusknoten rufen wir es alle 1000ms auf.

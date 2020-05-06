@@ -3,7 +3,6 @@ TODO: Some comments on this project.
 """
 
 from Heart import Heart
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -26,7 +25,7 @@ frequency = range(0, 1000, 1)
 #    print(step)
 #print(frequency[2])
 
-myHeart = Heart()
+#myHeart = Heart()
 
 heart = Heart()
 
