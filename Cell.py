@@ -1,5 +1,5 @@
 class Cell:
-    state = 0 # aktiviert, refrektär oder aktivierbar
+    color_state = 0
     # potential = -70  # Startpotential
     # frequenz = 0  # Wann soll Zelle wieder beginnen potential aufzubauen
     # schwellen_potential = -40  # Wann fangt Zelle an Spannung weiterzugeben
@@ -32,13 +32,13 @@ class Cell:
         DEPOLARIZED = 2  # aktiviert - solange wie dauer_erregung
         REFRACTORY = 3  # refrektär - solange wie refrektaerzeit
 
-    def __init__(self, state, mV):  # constructor
-        self.state = state
-        self.mV = mV
+    def __init__(self, color_state, ausbreitungs_geschwindigkeit):  # constructor
+        self.color_state = color_state
+        self.ausbreitungs_geschwindigkeit = ausbreitungs_geschwindigkeit
 
-    def get_state(self):
+    def get_color_state(self):
         # print(self.state)
-        return self.state
+        return self.color_state
 
     def trigger(self,time): #time wäre index von zeitpunkt von range frequency (1000 steps zu je 10) wo gerade zelle getriggered
         # wird aufgerufen wenn Nachbarzelle aktiviert und man selbst state 1 hat; für Sinusknoten rufen wir es alle 1000ms auf.

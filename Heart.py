@@ -30,26 +30,33 @@ class Heart:
             r = []  # create a row list
             for j in range(int(self.columns)):  # loop as many times as variable columns
                 if heart[i][j] == '0':
-                    no_heart_cell = Cell(0, 10)
-                    r.append(no_heart_cell.get_state())
+                    no_heart_cell = Cell(0, 0)
+                    r.append(no_heart_cell.get_color_state())
                 elif heart[i][j] == '1':
-                    muscle_cell = Cell(1, 10)
-                    r.append(muscle_cell.get_state())
+                    right_atrium = Cell(1, 4)
+                    r.append(right_atrium.get_color_state())
                 elif heart[i][j] == '2':
-                    sinus_knot = Cell(1, 10)
-                    r.append(sinus_knot.get_state())
+                    sinus_knot = Cell(1, 1)
+                    r.append(sinus_knot.get_color_state())
                 elif heart[i][j] == '3':
-                    av_knot = Cell(1, 10)
-                    r.append(av_knot.get_state())
+                    av_knot = Cell(1, 3)
+                    r.append(av_knot.get_color_state())
                 elif heart[i][j] == '4':
-                    his_bundle = Cell(1, 10)
-                    r.append(his_bundle.get_state())
+                    his_bundle = Cell(1, 3)
+                    r.append(his_bundle.get_color_state())
                 elif heart[i][j] == '5':
-                    tawara = Cell(1, 10)
-                    r.append(tawara.get_state())
+                    tawara = Cell(1, 2)
+                    r.append(tawara.get_color_state())
                 elif heart[i][j] == '6':
-                    purkinje = Cell(1, 10)
-                    r.append(purkinje.get_state())
+                    purkinje = Cell(1, 1)
+                    r.append(purkinje.get_color_state())
+                elif heart[i][j] == '7':
+                    left_atrium = Cell(1, 3)
+                    r.append(left_atrium.get_color_state())
+                elif heart[i][j] == '8':
+                    myokard = Cell(1, 5)
+                    r.append(myokard.get_color_state())
+
 
             matrix.append(r)  # add the rows filled with columns to existing matrix list
 
