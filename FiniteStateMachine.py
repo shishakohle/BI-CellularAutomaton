@@ -81,14 +81,14 @@ class FiniteStateMachine:
                 self.currentState.timestamp = time                    # (ST2.E1)
 
         elif self.currentState == StateName.DEPOLARIZING:             # (TR2): (ST2) --> ?
-            if (time - self.timestamp) >=\
+            if (time - self.currentState.timestamp) >=\
                     self.duration_depolarization_phase:               # (EV2)
                 # complete transition by entering new state
                 self.currentState.stateName = StateName.REFRACTORY    # (ST3)
                 self.currentState.timestamp = time                    # (ST3.E1)
 
-        elif self.currentState == StateName.REFRACTORYD:              # (TR3): (ST3) --> ?
-            if (time - self.timestamp) >=\
+        elif self.currentState == StateName.REFRACTORY:               # (TR3): (ST3) --> ?
+            if (time - self.currentState.timestamp) >=\
                     self.duration_refractory_phase:                   # (EV3)
                 # complete transition by entering new state
                 self.currentState.stateName = StateName.REFRACTORY    # (ST1)
