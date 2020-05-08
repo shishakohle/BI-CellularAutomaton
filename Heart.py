@@ -27,31 +27,31 @@ class Heart:
                 # TODO replace the if-elif tree by a switcher. Such a switcher already exists in Cell.
                 if heart[i][j] == '0':
                     no_heart_cell = Cell(Celltype.NO_HEART_CELL)
-                    r.append(no_heart_cell.get_color_state())  # TODO pls append the Cell Object, not an Integer
+                    r.append(no_heart_cell)
                 elif heart[i][j] == '1':
                     right_atrium = Cell(Celltype.RIGHT_ATRIUM)
-                    r.append(right_atrium.get_color_state())
+                    r.append(right_atrium)
                 elif heart[i][j] == '2':
                     sinus_knot = Cell(Celltype.SINUS_KNOT)
-                    r.append(sinus_knot.get_color_state())
+                    r.append(sinus_knot)
                 elif heart[i][j] == '3':
                     av_knot = Cell(Celltype.AV_KNOT)
-                    r.append(av_knot.get_color_state())
+                    r.append(av_knot)
                 elif heart[i][j] == '4':
                     his_bundle = Cell(Celltype.HIS_BUNDLE)
-                    r.append(his_bundle.get_color_state())
+                    r.append(his_bundle)
                 elif heart[i][j] == '5':
                     tawara = Cell(Celltype.TAWARA)
-                    r.append(tawara.get_color_state())
+                    r.append(tawara)
                 elif heart[i][j] == '6':
                     purkinje = Cell(Celltype.PURKINJE)
-                    r.append(purkinje.get_color_state())
+                    r.append(purkinje)
                 elif heart[i][j] == '7':
                     left_atrium = Cell(Celltype.LEFT_ATRIUM)
-                    r.append(left_atrium.get_color_state())
+                    r.append(left_atrium)
                 elif heart[i][j] == '8':
                     myokard = Cell(Celltype.MYOKARD)
-                    r.append(myokard.get_color_state())
+                    r.append(myokard)
 
             matrix.append(r)  # add the rows filled with columns to existing matrix list
 

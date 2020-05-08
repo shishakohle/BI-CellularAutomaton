@@ -39,11 +39,13 @@ heart = Heart()
 # plt.clf() clears window
 
 plt.imshow(image, extent=extent)
-plt.imshow(heart.heart, extent=extent, cmap=cmap, alpha= 0.7)
+#plt.imshow(heart.heart, extent=extent, cmap=cmap, alpha= 0.7)
 #plt.imshow(heart.getState(), extent=extent, cmap="Reds", alpha= 0.7)
 plt.title("Cellular Automata of the Heart")
 # TODO: remove axis labels
 plt.show()
+
+
 
 #test anna
 #for step in frequency:
