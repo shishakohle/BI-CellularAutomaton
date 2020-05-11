@@ -62,6 +62,21 @@ def createVisualizationMatrix(matrix):
 
     return visualization
 
+def testString(matrix):
+    visualization = []
+
+    for i in range(int(rows)):  # loop as many times as variable rows
+
+        r = []  # create a row list
+
+        for j in range(int(columns)):  # loop as many times as variable columns
+            r.append(matrix[i][j].getState())
+
+        visualization.append(r)
+
+    print(visualization)
+    return visualization
+
 heart = Heart()
 
 # create initial state of visualization
@@ -86,8 +101,8 @@ def animate(frame):
 
 
 # actual animation
-anim = animation.FuncAnimation(fig, animate, frames=200, interval=50)
-plt.show()
+#anim = animation.FuncAnimation(fig, animate, frames=200, interval=50)
+#plt.show()
 
 
 
@@ -95,6 +110,7 @@ plt.show()
 while True:
     #print( [ [1,2], [3,4] ] )
     print(heart.test())
+    testString(heart.heart)
     heart.step()
     delay_ms(1)
 
