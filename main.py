@@ -142,10 +142,10 @@ def animate(frame):
 # LOOP
 while True:
     # print( [ [1,2], [3,4] ] )
-    print(heart.test())
+    # print(heart.test())
     testString(heart.heart)
     heart.step()
-    delay_ms(5000)
+    delay_ms(1000)
 
 # print (heart.heart[0][0].stateMachine.currentState.stateName)
 # test anna
