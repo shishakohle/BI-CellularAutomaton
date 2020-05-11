@@ -74,7 +74,3 @@ class Cell:
             return self.color_state_depolarized[self.celltype]
         else:
             return self.color_state_polarized[self.celltype]
-
-
-
-

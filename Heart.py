@@ -37,6 +37,7 @@ class Heart:
                     r.append(right_atrium)
                 elif heart[i][j] == '2':
                     sinus_knot = Cell(Celltype.SINUS_KNOT)
+                    sinus_knot.trigger();  # sine knot immediately triggered.
                     r.append(sinus_knot)
                 elif heart[i][j] == '3':
                     av_knot = Cell(Celltype.AV_KNOT)
