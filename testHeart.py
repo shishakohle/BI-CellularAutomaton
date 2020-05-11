@@ -15,15 +15,6 @@ myHeart = Heart()
 image = plt.imread("heart.png")
 
 
-def delay_ms(milliseconds):
-    """
-    # timestamp = time.time_ns()
-    Replacing time.time_ns(), as time_ns() was new in python 3.7
-    see also: https://github.com/raysect/source/issues/303 (2020-05-11)
-    """
-    time.sleep(milliseconds/1000)
-
-
 while True:
     # plt.imshow(image, extent=extent)
     # plt.show()

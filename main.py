@@ -31,11 +31,13 @@ extent = np.min(X), np.max(X), np.min(Y), np.max(Y)
 image = plt.imread("heart.png")
 
 
-def wait(milliseconds):
-    threshold = time.time_ns() + milliseconds * 1000000
-
-    while time.time_ns() < threshold:
-        pass
+def delay_ms(milliseconds):
+    """
+    # timestamp = time.time_ns()
+    Replacing time.time_ns(), as time_ns() was new in python 3.7
+    see also: https://github.com/raysect/source/issues/303 (2020-05-11)
+    """
+    time.sleep(milliseconds/1000)
 
 
 frequency = range(0, 1000, 1)
@@ -84,14 +86,16 @@ def animate(frame):
 
 
 # actual animation
-anim = animation.FuncAnimation(fig, animate, frames=200, interval=50)
+#anim = animation.FuncAnimation(fig, animate, frames=200, interval=50)
 
-plt.show()
+#plt.show()
+
+# print (heart.heart[0][0].stateMachine.currentState.stateName)
 
 # LOOP
 #while True:
    #heart.step()
-   # wait(1)
+   # delay_ms(1000)
 
 
 
