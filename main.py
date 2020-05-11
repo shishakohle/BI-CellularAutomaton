@@ -11,8 +11,8 @@ import matplotlib.animation as animation
 
 
 # colormap
-cmap = colors.ListedColormap(['#FFFFFF', '#E9967A','#8B0000', '#AB82FF', '#5D478B', '#A2CD5A', '#556B2F', '#87CEFA',
-                              '#00008B', '#FFFF00', '#8B8B00', '#FF8C00', '#8B4500'])
+cmap = colors.ListedColormap(['#FFFFFF', '#E9967A', '#8B0000', '#a59bff', '#3e135e', '#A2CD5A',
+                              '#588c3a', '#00baff', '#000b34', '#fff313', '#7b7b00', '#ffd349', '#7b4400'])
 boundaries = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 norm = colors.BoundaryNorm(boundaries, cmap.N, clip=True)
 
@@ -76,7 +76,7 @@ plt.imshow(image, extent=extent)
 fig = plt.gcf()
 
 # Show first image - which is the initial board
-im = plt.imshow(heartVis, extent=extent, cmap=cmap, alpha= 0.7)
+im = plt.imshow(heartVis, extent=extent, cmap=cmap, alpha= 0.8)
 
 
 # Helper function that updates visualization -> function that FuncAnimation calls
@@ -86,9 +86,9 @@ def animate(frame):
 
 
 # actual animation
-#anim = animation.FuncAnimation(fig, animate, frames=200, interval=50)
+anim = animation.FuncAnimation(fig, animate, frames=200, interval=50)
 
-#plt.show()
+plt.show()
 
 # print (heart.heart[0][0].stateMachine.currentState.stateName)
 

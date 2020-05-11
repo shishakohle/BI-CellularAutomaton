@@ -11,7 +11,6 @@ class Heart:
         self.heart = self.init_matrix()
         # self.visualization = self.createVisualizationMatrix(self.heart)
 
-
     def init_matrix(self):
         matrix = []
 
@@ -70,12 +69,12 @@ class Heart:
         # 5) Normale Weitergabe an Nachbarzellen für Tawara und Purkinje
         # 6) Myokard darf sich erst anfangen lassen von Nachbarzellen zu aktivieren, wenn alle Purkinje Fasern auf depolarized (3) sind
 
-        for row in range( len(self.heart) ):
-            for column in range( len(self.heart[row]) ):
+        for row in range(len(self.heart)):
+            for column in range(len(self.heart[row])):
 
                 if self.heart[row][column].celltype == Celltype.HIS_BUNDLE:
                     # trigger if: (1) all AV knots are depolarized and (2) neighbourhood contains an depolarized cell
-                    if self.allDepolarized(Celltype.AV_KNOT) && self.aNeighbourIsDepolarized(row, column):
+                    if self.allDepolarized(Celltype.AV_KNOT) and self.aNeighbourIsDepolarized(row, column):
                         self.heart[row][column].trigger()
 
                 elif self.heart[row][column].celltype == Celltype.MYOKARD:
@@ -94,20 +93,20 @@ class Heart:
         aNeighbourIsDepolarized = False
 
         # neighbourhood: Moore
-        north = row    - 1 if row    - 1 in range(0,1,len(self.heart))      else north = row
-        south = row    + 1 if row    + 1 in range(0,1,len(self.heart))      else south = row
-        east  = column + 1 if column + 1 in range(0,1,len(self.heart[row])) else east  = column
-        west  = column - 1 if column - 1 in range(0,1,len(self.heart[row])) else west  = column
+        north = row-1 if row-1 in range(0, 1, len(self.heart)) else row
+        south = row + 1 if row + 1 in range(0, 1, len(self.heart)) else row
+        east = column + 1 if column + 1 in range(0, 1, len(self.heart[row])) else column
+        west = column - 1 if column - 1 in range(0, 1, len(self.heart[row])) else column
 
         # for all 8 neighbours: check if they are depolirated (if they exist)#
         if self.heart[north][column].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[north][east]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[row]  [east]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[south][east]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[north][east].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[row][east].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[south][east].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
         if self.heart[south][column].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[south][west]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[row]  [west]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[north][west]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[south][west].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[row][west].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[north][west].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
 
         return aNeighbourIsDepolarized
 
