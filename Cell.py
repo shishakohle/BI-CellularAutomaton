@@ -20,9 +20,9 @@ class Cell:
         Celltype.LEFT_ATRIUM: 8,
         Celltype.SINUS_KNOT: 10,
         Celltype.MYOKARD: 8,
-        Celltype.PURKINJE: 6,
-        Celltype.TAWARA: 4,
-        Celltype.HIS_BUNDLE: 2,
+        Celltype.PURKINJE: 5,
+        Celltype.TAWARA: 3,
+        Celltype.HIS_BUNDLE: 1,
         Celltype.AV_KNOT: 12,
     }
     color_state_depolarized = {  # aktiviert
@@ -32,8 +32,8 @@ class Cell:
         Celltype.SINUS_KNOT: 11,
         Celltype.MYOKARD: 9,
         Celltype.PURKINJE: 6,
-        Celltype.TAWARA: 5,
-        Celltype.HIS_BUNDLE: 3,
+        Celltype.TAWARA: 4,
+        Celltype.HIS_BUNDLE: 2,
         Celltype.AV_KNOT: 0,
     }
 
