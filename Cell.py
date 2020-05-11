@@ -38,6 +38,7 @@ class Cell:
 
     dauer_erregung = 200  # für alle Zellen gleich 20 Zeiteinheiten (200 ms)
     refrektaer_zeit = 300  # für alle Zellen gleich 30 Zeiteinheiten (300ms)
+    testCount = 0
     ausbreitungs_geschwindigkeit = {
         Celltype.NO_HEART_CELL: 0,
         Celltype.RIGHT_ATRIUM: 4,
@@ -55,17 +56,24 @@ class Cell:
         self.stateMachine = FiniteStateMachine(self.ausbreitungs_geschwindigkeit[self.celltype],
                                                self.dauer_erregung, self.refrektaer_zeit)
         self.isTriggered = False
-        self.step = 0
+        self.stepCount = 0
 
     def trigger(self):
         self.isTriggered = True
 
     def step(self):
-        self.step += 1
-        self.stateMachine.refreshState(self.step, self.isTriggered)
+        self.stepCount += 1
+        self.stateMachine.refreshState(self.stepCount, self.isTriggered)
         self.isTriggered = False  # reset depolarization trigger
 
     def get_color_state(self):
+        self.testCount = self.testCount + 1
         # print(self.state)
-        return self.color_state_polarized[self.celltype]
+        if self.testCount % 2 == 0:
+            return self.color_state_polarized[self.celltype]
+        else:
+            return self.color_state_depolarized[self.celltype]
+
+
+
 

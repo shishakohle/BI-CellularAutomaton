@@ -1,6 +1,8 @@
 from Cell import Cell
 from Cell import Celltype
 import csv
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
 
 class Heart:
@@ -9,6 +11,8 @@ class Heart:
         self.rows = 49  # the resolution of the y-axis in a carthesian coordinate system
         self.columns = 67  # the resolution of the x-axis in a carthesian coordinate system
         self.heart = self.init_matrix()
+        # self.visualization = self.createVisualizationMatrix(self.heart)
+
 
     def init_matrix(self):
         matrix = []
@@ -57,6 +61,8 @@ class Heart:
 
         return matrix
 
+
+
     def placeCell(self, cell, x, y):
         # TODO: check x and y for validity (IndexError: list index out of range)
         self.cells[x][y] = cell  # TODO: some of the cells must be "copied", not referenced!
@@ -90,3 +96,4 @@ class Heart:
                 cell.trigger()
                 cell.step()
                 # TODO will be continued as soon as the "no Objects of type Cell in heart matrix" issue is resolved
+
