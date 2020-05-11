@@ -118,10 +118,10 @@ class Heart:
         aNeighbourIsDepolarized = False
 
         # neighbourhood: Moore
-        north = 13 if 13 in range(0, 1, len(self.heart)) else row
-        south = 15 if 15 in range(0, 1, len(self.heart)) else row
-        east = 20 if 20 in range(0, 1, len(self.heart[row])) else column
-        west = 18 if 18 in range(0, 1, len(self.heart[row])) else column
+        north = 13 if 13 in range(len(self.heart)) else row
+        south = 15 if 15 in range(len(self.heart)) else row
+        east = 20 if 20 in range(len(self.heart[row])) else column
+        west = 18 if 18 in range(len(self.heart[row])) else column
 
         # for all 8 neighbours: check if they are depolirated (if they exist)#
         if self.heart[north][column].getState() == 3: aNeighbourIsDepolarized = True

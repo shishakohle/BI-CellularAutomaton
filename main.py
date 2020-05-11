@@ -85,10 +85,10 @@ def testString(matrix):
     row = 14
     column = 19
     # neighbourhood: Moore
-    north = 13 if 13 in range(0, 1, len(matrix)) else row
-    south = 15 if 15 in range(0, 1, len(matrix)) else row
-    east = 20 if 20 in range(0, 1, len(matrix[row])) else column
-    west = 18 if 18 in range(0, 1, len(matrix[row])) else column
+    north = 13 if 13 in range(len(matrix)) else row
+    south = 15 if 15 in range(len(matrix)) else row
+    east = 20 if 20 in range(len(matrix[row])) else column
+    west = 18 if 18 in range(len(matrix[row])) else column
 
     # for all 8 neighbours: check if they are depolirated (if they exist)#
     if matrix[north][column].getState() == 3: NeighbourIsDepolarized = True
@@ -100,7 +100,7 @@ def testString(matrix):
     if matrix[south][east].getState() == 3: NeighbourIsDepolarized = True
     print("South-East is", matrix[south][east].getState())
     if matrix[south][column].getState() == 3: NeighbourIsDepolarized = True
-    print("South is",matrix[south][column].getState())
+    print("South is", matrix[south][column].getState())
     if matrix[south][west].getState() == 3: aNeighbourIsDepolarized = True
     print("South-west is", matrix[south][west].getState())
     if matrix[row][west].getState() == 3: NeighbourIsDepolarized = True
