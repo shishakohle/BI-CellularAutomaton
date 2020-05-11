@@ -117,7 +117,7 @@ def testString(matrix):
 heart = Heart()
 
 # create initial state of visualization
-heartVis = createVisualizationMatrix(heart.heart)
+#heartVis = createVisualizationMatrix(heart.heart)
 
 # initial settings for plot
 plt.title("Cellular Automaton of the Heart")
@@ -128,19 +128,43 @@ plt.imshow(image, extent=extent)
 fig = plt.gcf()
 
 # Show first image - which is the initial board
-im = plt.imshow(heartVis, extent=extent, cmap=cmap, alpha=0.8)
+#im = plt.imshow(heartVis, extent=extent, cmap=cmap, alpha=0.8)
 
 
 # Helper function that updates visualization -> function that FuncAnimation calls
+"""
 def animate(frame):
     heart.step()
     im.set_data(createVisualizationMatrix(heart.heart))
     return im
+"""
+
+# actual animation
+#anim = animation.FuncAnimation(fig, animate, frames=1, interval=1)
+#plt.show()
+
+visualizationStorage = []
+
+
+for miliSec in range(1, 801, 1):
+    heart.step()
+    visualizationStorage.append(createVisualizationMatrix(heart.heart))
+    print("step: " , miliSec)
+
+
+heartVis = visualizationStorage[0]
+im = plt.imshow(heartVis, extent=extent, cmap=cmap, alpha=0.8)
+
+def animate(frame):
+    im.set_data(visualizationStorage[frame])
+    return im
 
 
 # actual animation
-anim = animation.FuncAnimation(fig, animate, frames=1, interval=1)
+anim = animation.FuncAnimation(fig, animate, frames=800, interval=1)
 plt.show()
+
+
 
 
 # LOOP
