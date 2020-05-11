@@ -59,6 +59,31 @@ class Heart:
 
         return matrix
 
+    """
+    def toString(self):
+        stringMatrix = []
+        for row in range(len(self.heart),1):
+            r = []
+            for column in range(0,len(self.heart[row]),1):
+                r.append(self.heart[row][column].getState())
+            stringMatrix.append(r)
+        return stringMatrix
+    """
+
+    def test(self):
+        visualization = []
+
+        for i in range(int(self.rows)):  # loop as many times as variable rows
+
+            r = []  # create a row list
+
+            for j in range(int(self.columns)):  # loop as many times as variable columns
+                r.append(self.heart[i][j].getState())
+
+            visualization.append(r)
+
+        return visualization
+
     def step(self):  # one step transits the heart simulation 1 time step ahead
         # comments Anna:
         # 1) alle Sinusknotenzellen gleichzeitig im Zeitpunkt 0 auf getriggered -> geschieht in Heart.__init__()
@@ -69,8 +94,8 @@ class Heart:
         # 5) Normale Weitergabe an Nachbarzellen für Tawara und Purkinje
         # 6) Myokard darf sich erst anfangen lassen von Nachbarzellen zu aktivieren, wenn alle Purkinje Fasern auf depolarized (3) sind
 
-        for row in range(len(self.heart)):
-            for column in range(len(self.heart[row])):
+        for row in range(0,len(self.heart),1):
+            for column in range(0,len(self.heart[row]),1):
 
                 if self.heart[row][column].celltype == Celltype.HIS_BUNDLE:
                     # trigger if: (1) all AV knots are depolarized and (2) neighbourhood contains an depolarized cell
@@ -113,8 +138,8 @@ class Heart:
     def allDepolarized(self, cellytpe):
         allDepolarized = True
 
-        for row in range(len(self.heart)):
-            for column in range(len(self.heart[row])):
+        for row in range(0,len(self.heart),1):
+            for column in range(0,len(self.heart[row]),1):
 
                 if self.heart[row][column].celltype == cellytpe:
                     if self.heart[row][column].getState() != StateName.DEPOLARIZED: allDepolarized = False

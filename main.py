@@ -87,18 +87,19 @@ def animate(frame):
 
 # actual animation
 anim = animation.FuncAnimation(fig, animate, frames=200, interval=50)
-
 plt.show()
 
-# print (heart.heart[0][0].stateMachine.currentState.stateName)
+
 
 # LOOP
-#while True:
-   #heart.step()
-   # delay_ms(1000)
+while True:
+    #print( [ [1,2], [3,4] ] )
+    print(heart.test())
+    heart.step()
+    delay_ms(1)
 
 
-
+# print (heart.heart[0][0].stateMachine.currentState.stateName)
 #test anna
 #for step in frequency:
 #    if(step == 10):
