@@ -88,7 +88,7 @@ class FiniteStateMachine:
             if (time - self.currentState.timestamp) >=\
                     self.duration_depolarization_phase:               # (EV2)
                 # complete transition by entering new state
-                self.currentState.stateName = StateName.DEPOLARIZED   # (ST3)
+                self.currentState.stateName = 3   # (ST3)
                 self.currentState.timestamp = time                    # (ST3.E1)
 
         elif self.currentState.stateName == StateName.DEPOLARIZED:    # (TR3): (ST3) --> ?

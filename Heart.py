@@ -118,20 +118,20 @@ class Heart:
         aNeighbourIsDepolarized = False
 
         # neighbourhood: Moore
-        north = row-1 if row-1 in range(0, 1, len(self.heart)) else row
-        south = row + 1 if row + 1 in range(0, 1, len(self.heart)) else row
-        east = column + 1 if column + 1 in range(0, 1, len(self.heart[row])) else column
-        west = column - 1 if column - 1 in range(0, 1, len(self.heart[row])) else column
+        north = 13 if 13 in range(0, 1, len(self.heart)) else row
+        south = 15 if 15 in range(0, 1, len(self.heart)) else row
+        east = 20 if 20 in range(0, 1, len(self.heart[row])) else column
+        west = 18 if 18 in range(0, 1, len(self.heart[row])) else column
 
         # for all 8 neighbours: check if they are depolirated (if they exist)#
-        if self.heart[north][column].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[north][east].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[row][east].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[south][east].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[south][column].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[south][west].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[row][west].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[north][west].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[north][column].getState() == 3: aNeighbourIsDepolarized = True
+        if self.heart[north][east].getState() == 3: aNeighbourIsDepolarized = True
+        if self.heart[row][east].getState() == 3: aNeighbourIsDepolarized = True
+        if self.heart[south][east].getState() == 3: aNeighbourIsDepolarized = True
+        if self.heart[south][column].getState() == 3: aNeighbourIsDepolarized = True
+        if self.heart[south][west].getState() == 3: aNeighbourIsDepolarized = True
+        if self.heart[row][west].getState() == 3: aNeighbourIsDepolarized = True
+        if self.heart[north][west].getState() == 3: aNeighbourIsDepolarized = True
 
         return aNeighbourIsDepolarized
 
@@ -142,6 +142,6 @@ class Heart:
             for column in range(0,len(self.heart[row]),1):
 
                 if self.heart[row][column].celltype == cellytpe:
-                    if self.heart[row][column].getState() != StateName.DEPOLARIZED: allDepolarized = False
+                    if self.heart[row][column].getState() != 3: allDepolarized = False
 
         return allDepolarized

@@ -62,6 +62,7 @@ class Cell:
         self.isTriggered = True
 
     def step(self):
+        #print ("ping")
         self.stepCount += 1
         self.stateMachine.refreshState(self.stepCount, self.isTriggered)
         self.isTriggered = False  # reset depolarization trigger
@@ -70,7 +71,7 @@ class Cell:
         return self.stateMachine.currentState.stateName
 
     def get_color_state(self):
-        if self.getState() == StateName.DEPOLARIZED:
+        if self.getState() == 3:
             return self.color_state_depolarized[self.celltype]
         else:
             return self.color_state_polarized[self.celltype]
