@@ -63,7 +63,6 @@ class Cell:
         self.isTriggered = True
 
     def step(self):
-        #print ("ping")
         self.stepCount += 1
         self.stateMachine.refreshState(self.stepCount, self.isTriggered)
         self.isTriggered = False  # reset depolarization trigger

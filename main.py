@@ -139,7 +139,7 @@ def animate(frame):
 
 
 # actual animation
-anim = animation.FuncAnimation(fig, animate, frames=400, interval=1, repeat=False)
+anim = animation.FuncAnimation(fig, animate, frames=1, interval=1)
 plt.show()
 
 
