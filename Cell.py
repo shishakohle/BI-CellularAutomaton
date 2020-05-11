@@ -67,9 +67,7 @@ class Cell:
         self.isTriggered = False  # reset depolarization trigger
 
     def get_color_state(self):
-        self.testCount = self.testCount + 1
-        # print(self.state)
-        if self.testCount % 2 == 0:
+        if self.stateMachine.currentState.stateName == 1:
             return self.color_state_polarized[self.celltype]
         else:
             return self.color_state_depolarized[self.celltype]
