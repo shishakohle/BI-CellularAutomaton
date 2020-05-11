@@ -15,22 +15,20 @@ myHeart = Heart()
 image = plt.imread("heart.png")
 
 
-def wait(milliseconds):
-    threshold = time.time_ns() + milliseconds * 1000000
-
-    while time.time_ns() < threshold:
-        pass
+def delay_ms(milliseconds):
+    """
+    # timestamp = time.time_ns()
+    Replacing time.time_ns(), as time_ns() was new in python 3.7
+    see also: https://github.com/raysect/source/issues/303 (2020-05-11)
+    """
+    time.sleep(milliseconds/1000)
 
 
 while True:
-    # myHeart.step()
-    plt.imshow(image, extent=extent)
-    plt.show()
-    wait(1000)
-    plt.clf()
-    wait(1000)
+    # plt.imshow(image, extent=extent)
+    # plt.show()
+    # plt.clf()
 
-
-
-
-
+    myHeart.step()
+    print("ping")
+    delay_ms(5000)

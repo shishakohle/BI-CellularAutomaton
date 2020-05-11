@@ -66,7 +66,7 @@ heart = Heart()
 heartVis = createVisualizationMatrix(heart.heart)
 
 # initial settings for plot
-plt.title("Cellular Automata of the Heart")
+plt.title("Cellular Automaton of the Heart")
 plt.axis('off')
 plt.imshow(image, extent=extent)
 

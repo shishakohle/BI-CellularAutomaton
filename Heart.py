@@ -61,13 +61,14 @@ class Heart:
 
         return matrix
 
-
-
+    """
     def placeCell(self, cell, x, y):
         # TODO: check x and y for validity (IndexError: list index out of range)
         self.cells[x][y] = cell  # TODO: some of the cells must be "copied", not referenced!
         return
+    """
 
+    """
     # TODO: Frage von Ingo: Benötigen wir diese funktion noch?
     def getState(self):  # returns a matrix that indicates the current state of each heart cell
         state = []
@@ -76,6 +77,7 @@ class Heart:
             for j in range(int(self.rows)):
                 state[i].append(self.cells[i][j].get_state())
         return state
+    """
 
     def step(self):  # one step transits the heart simulation 1 time step ahead
         # step all (cells except sine-knot) according to their neighbours (Moore neighbourhood)
