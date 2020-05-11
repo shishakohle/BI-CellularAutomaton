@@ -10,30 +10,31 @@ class Celltype:
     PURKINJE = 6
     LEFT_ATRIUM = 7
     MYOKARD = 8
+    TEST = 9
 
 
 class Cell:
     color_state_polarized = {  # aktivierbar
-        Celltype.NO_HEART_CELL: 0,
-        Celltype.RIGHT_ATRIUM: 1,
-        Celltype.LEFT_ATRIUM: 1,
-        Celltype.SINUS_KNOT: 3,
-        Celltype.MYOKARD: 1,
-        Celltype.PURKINJE: 11,
-        Celltype.TAWARA: 9,
-        Celltype.HIS_BUNDLE: 7,
-        Celltype.AV_KNOT: 5
+        Celltype.NO_HEART_CELL: 7,
+        Celltype.RIGHT_ATRIUM: 8,
+        Celltype.LEFT_ATRIUM: 8,
+        Celltype.SINUS_KNOT: 10,
+        Celltype.MYOKARD: 8,
+        Celltype.PURKINJE: 6,
+        Celltype.TAWARA: 4,
+        Celltype.HIS_BUNDLE: 2,
+        Celltype.AV_KNOT: 12,
     }
     color_state_depolarized = {  # aktiviert
-        Celltype.NO_HEART_CELL: 0,
-        Celltype.RIGHT_ATRIUM: 2,
-        Celltype.LEFT_ATRIUM: 2,
-        Celltype.SINUS_KNOT: 4,
-        Celltype.MYOKARD: 2,
-        Celltype.PURKINJE: 12,
-        Celltype.TAWARA: 10,
-        Celltype.HIS_BUNDLE: 8,
-        Celltype.AV_KNOT: 6
+        Celltype.NO_HEART_CELL: 7,
+        Celltype.RIGHT_ATRIUM: 9,
+        Celltype.LEFT_ATRIUM: 9,
+        Celltype.SINUS_KNOT: 11,
+        Celltype.MYOKARD: 9,
+        Celltype.PURKINJE: 6,
+        Celltype.TAWARA: 5,
+        Celltype.HIS_BUNDLE: 3,
+        Celltype.AV_KNOT: 0,
     }
 
     dauer_erregung = 200  # für alle Zellen gleich 20 Zeiteinheiten (200 ms)

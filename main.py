@@ -11,8 +11,8 @@ from Cell import Celltype
 import matplotlib.animation as animation
 
 # colormap
-cmap = colors.ListedColormap(['#FFFFFF', '#E9967A', '#8B0000', '#a59bff', '#3e135e', '#A2CD5A',
-                              '#588c3a', '#00baff', '#000b34', '#fff313', '#7b7b00', '#ffd349', '#7b4400'])
+cmap = colors.ListedColormap(['#2e4a1e', '#00baff', '#000b34', '#fff313', '#7b7b00', '#fcc926', '#605acd',
+                              '#FFFFFF', '#E9967A', '#8B0000', '#605acd', '#3e135e', '#A2CD5A'])
 boundaries = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 norm = colors.BoundaryNorm(boundaries, cmap.N, clip=True)
 
@@ -60,6 +60,9 @@ def createVisualizationMatrix(matrix):
 
         visualization.append(r)
 
+    x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+    visualization.pop(48)
+    visualization.append(x)
     return visualization
 
 
@@ -130,22 +133,23 @@ im = plt.imshow(heartVis, extent=extent, cmap=cmap, alpha=0.8)
 
 # Helper function that updates visualization -> function that FuncAnimation calls
 def animate(frame):
+    heart.step()
     im.set_data(createVisualizationMatrix(heart.heart))
     return im
 
 
 # actual animation
-# anim = animation.FuncAnimation(fig, animate, frames=200, interval=50)
-# plt.show()
+anim = animation.FuncAnimation(fig, animate, frames=400, interval=1, repeat=False)
+plt.show()
 
 
 # LOOP
-while True:
+#while True:
     # print( [ [1,2], [3,4] ] )
     # print(heart.test())
-    testString(heart.heart)
-    heart.step()
-    delay_ms(1000)
+   # testString(heart.heart)
+    #heart.step()
+    #delay_ms(1000)
 
 # print (heart.heart[0][0].stateMachine.currentState.stateName)
 # test anna
