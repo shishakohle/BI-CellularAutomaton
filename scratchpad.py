@@ -1,3 +1,140 @@
+"""
+# timestamp = time.time_ns()
+Replacing time.time_ns(), as time_ns() was new in python 3.7
+see also: https://github.com/raysect/source/issues/303 (2020-05-11)
+"""
+
+# create initial state of visualization
+#heartVis = createVisualizationMatrix(heart.heart)
+
+
+# for step in frequency:
+#    print(step)
+# print(frequency[2])
+
+# Show first image - which is the initial board
+#im = plt.imshow(heartVis, extent=extent, cmap=cmap, alpha=0.8)
+
+# Helper function that updates visualization -> function that FuncAnimation calls
+"""
+def animate(frame):
+    heart.step()
+    im.set_data(createVisualizationMatrix(heart.heart))
+    return im
+"""
+
+
+# actual animation
+#anim = animation.FuncAnimation(fig, animate, frames=1, interval=1)
+#plt.show()
+
+# steps for animation 10 ms (Zyklus: 0 - 200ms + 300ms Pause = 500ms gesamter Zyklus)
+# Cells look to neighbour and start contracting if neighbour has reached its mV
+# no-heart-cell || heart-cell
+
+def testString(matrix):
+    visualization = []
+
+    for i in range(int(rows)):  # loop as many times as variable rows
+
+        r = []  # create a row list
+
+        for j in range(int(columns)):  # loop as many times as variable columns
+            r.append(matrix[i][j].getState())
+            if matrix[i][j].celltype == Celltype.SINUS_KNOT:
+                print("is triggered") if matrix[i][j].isTriggered else print("Is not triggered")
+                print(matrix[i][j].getState())
+
+        visualization.append(r)
+
+    for line in visualization:
+        print(line)
+
+    NeighbourIsDepolarized = False
+    row = 14
+    column = 19
+    # neighbourhood: Moore
+    north = 13 if 13 in range(len(matrix)) else row
+    south = 15 if 15 in range(len(matrix)) else row
+    east = 20 if 20 in range(len(matrix[row])) else column
+    west = 18 if 18 in range(len(matrix[row])) else column
+
+    # for all 8 neighbours: check if they are depolirated (if they exist)#
+    if matrix[north][column].getState() == 3: NeighbourIsDepolarized = True
+    print("North is", matrix[north][column].getState())
+    if matrix[north][east].getState() == 3: NeighbourIsDepolarized = True
+    print("North-east is", matrix[north][east].getState())
+    if matrix[row][east].getState() == 3: NeighbourIsDepolarized = True
+    print("East is", matrix[row][east].getState())
+    if matrix[south][east].getState() == 3: NeighbourIsDepolarized = True
+    print("South-East is", matrix[south][east].getState())
+    if matrix[south][column].getState() == 3: NeighbourIsDepolarized = True
+    print("South is", matrix[south][column].getState())
+    if matrix[south][west].getState() == 3: aNeighbourIsDepolarized = True
+    print("South-west is", matrix[south][west].getState())
+    if matrix[row][west].getState() == 3: NeighbourIsDepolarized = True
+    print("West is", matrix[row][west].getState())
+    if matrix[north][west].getState() == 3: NeighbourIsDepolarized = True
+    print("North-west is", matrix[north][west].getState())
+
+    return visualization
+
+
+
+# LOOP
+#while True:
+    # print( [ [1,2], [3,4] ] )
+    # print(heart.test())
+   # testString(heart.heart)
+    #heart.step()
+    #delay_ms(1000)
+
+# print (heart.heart[0][0].stateMachine.currentState.stateName)
+# test anna
+# for step in frequency:
+#    if(step == 10):
+#        cell_test = Cell(1,-70)
+#        cell_test.trigger(step)
+#        print("stop")
+
+
+"""
+def toString(self):
+    stringMatrix = []
+    for row in range(len(self.heart),1):
+        r = []
+        for column in range(0,len(self.heart[row]),1):
+            r.append(self.heart[row][column].getState())
+        stringMatrix.append(r)
+    return stringMatrix
+"""
+"""
+def test(self):
+    visualization = []
+
+    for i in range(int(self.rows)):  # loop as many times as variable rows
+
+        r = []  # create a row list
+
+        for j in range(int(self.columns)):  # loop as many times as variable columns
+            r.append(self.heart[i][j].getState())
+
+        visualization.append(r)
+
+    return visualization
+"""
+
+
+# comments Anna:
+# 1) alle Sinusknotenzellen gleichzeitig im Zeitpunkt 0 auf getriggered -> geschieht in Heart.__init__()
+# 2) Vorhof (links und rechts) beginnt sich gleicheitig vom Sinusknoten aus zu depolarizen (isTriggered) und gibt Impuls an Nachbarzellen weiter
+#    2.1) Wenn meine Nachbarzelle depolarized ist und ich polarizable --> isTriggered
+# 3) Vorhof darf nicht His-Bündel aktivieren, sondern nur AV Knoten
+# 4) Erst wenn alle AV-Knoten Zellen vollständig geladen (depolarized) sind, dürfen Vorhofzellen (links) an benachbarte Hisbündelzellen weitergeben
+# 5) Normale Weitergabe an Nachbarzellen für Tawara und Purkinje
+# 6) Myokard darf sich erst anfangen lassen von Nachbarzellen zu aktivieren, wenn alle Purkinje Fasern auf depolarized (3) sind
+
+
 # from matplotlib.animation import FuncAnimation
 
 

@@ -10,6 +10,7 @@ class Heart:
         self.columns = 67  # the resolution of the x-axis in a carthesian coordinate system
         self.heart = self.init_matrix()
         # self.visualization = self.createVisualizationMatrix(self.heart)
+        self.simulationSamples = []
 
     def init_matrix(self):
         matrix = []
@@ -59,40 +60,35 @@ class Heart:
 
         return matrix
 
-    """
-    def toString(self):
-        stringMatrix = []
-        for row in range(len(self.heart),1):
-            r = []
-            for column in range(0,len(self.heart[row]),1):
-                r.append(self.heart[row][column].getState())
-            stringMatrix.append(r)
-        return stringMatrix
-    """
-    """
-    def test(self):
-        visualization = []
+    def currentSample(self):
+        sample = []
 
         for i in range(int(self.rows)):  # loop as many times as variable rows
 
             r = []  # create a row list
 
             for j in range(int(self.columns)):  # loop as many times as variable columns
-                r.append(self.heart[i][j].getState())
+                r.append(self.heart[i][j].get_color_state())
 
-            visualization.append(r)
+            sample.append(r)
 
-        return visualization
-    """
+        # add the whole color map to sample (plot needs each color present at last once in each sample)
+        x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+             7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+        # sample.pop()
+        # sample.append(x)
+        sample.pop(0)
+        sample.add(0, x)
+
+        return sample
+
+    def simulateCycle(self):
+        for millisecond in range(800):
+            self.simulationSamples.append(self.currentSample())
+            print("Simulating heart cycle. step no.", millisecond)
+            self.step()
+
     def step(self):  # one step transits the heart simulation 1 time step ahead
-        # comments Anna:
-        # 1) alle Sinusknotenzellen gleichzeitig im Zeitpunkt 0 auf getriggered -> geschieht in Heart.__init__()
-        # 2) Vorhof (links und rechts) beginnt sich gleicheitig vom Sinusknoten aus zu depolarizen (isTriggered) und gibt Impuls an Nachbarzellen weiter
-        #    2.1) Wenn meine Nachbarzelle depolarized ist und ich polarizable --> isTriggered
-        # 3) Vorhof darf nicht His-Bündel aktivieren, sondern nur AV Knoten
-        # 4) Erst wenn alle AV-Knoten Zellen vollständig geladen (depolarized) sind, dürfen Vorhofzellen (links) an benachbarte Hisbündelzellen weitergeben
-        # 5) Normale Weitergabe an Nachbarzellen für Tawara und Purkinje
-        # 6) Myokard darf sich erst anfangen lassen von Nachbarzellen zu aktivieren, wenn alle Purkinje Fasern auf depolarized (3) sind
 
         for row in range(9,len(self.heart),1):
             for column in range(13,55,1):
