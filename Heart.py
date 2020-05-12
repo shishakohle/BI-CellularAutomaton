@@ -1,8 +1,9 @@
 from Cell import *
 
-import os
 import csv
+import time
 import numpy as np
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
@@ -89,12 +90,25 @@ class Heart:
         return sample
 
     def simulateCycle(self):
-        simSteps = 800  # total of simulation steps TODO: hardcoded. maybe take this is a paramter?
+
+        # simSteps = 800  # total of simulation steps TODO: hardcoded. maybe take this is a paramter?
+        simSteps = 800
+        timestamp = time.time()
+
         for step in range(simSteps):
             print("simulating heart cycle ... [ sample", step + 1, "of", simSteps, "|", int((step+1)/simSteps*100),
-                  "% completed ]")
+                  "% complete ]")
             self.simulationSamples.append(self.currentSample())
             self.step()
+
+        duration = time.time() - timestamp
+        print("simulating heart cycle ... [ complete. (", int(duration/60), "minutes", int(duration % 60), "seconds ) ]")
+
+        # TODO take destination path as a parameter
+        np.save("simulation_samples.npy", self.simulationSamples)  # TODO what if file could not be saved? and: files will be overwritten -> ok?
+        filesize = Path("simulation_samples.npy").stat().st_size  # file size in bytes
+        print("simulating heart cycle ... [ saved samples to file (", "{:.2f}".format(filesize/1000000), "MB ) ]")
+        # TODO compress file (e.g. one test run resulted in a file of 21.01 MB, but 214 kB if zipped)
 
     def plotSimulation(self):
         # colormap
