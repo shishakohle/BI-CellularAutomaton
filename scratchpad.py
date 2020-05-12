@@ -1,3 +1,7 @@
+import time
+def delay_ms(milliseconds):
+    time.sleep(milliseconds / 1000)
+
 """
 # timestamp = time.time_ns()
 Replacing time.time_ns(), as time_ns() was new in python 3.7

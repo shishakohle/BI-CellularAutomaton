@@ -1,6 +1,12 @@
 from Cell import *
-# from Cell import Celltype
+
+import os
 import csv
+import numpy as np
+
+import matplotlib.pyplot as plt
+import matplotlib.colors as colors
+import matplotlib.animation as animation
 
 
 class Heart:
@@ -78,15 +84,51 @@ class Heart:
         # sample.pop()
         # sample.append(x)
         sample.pop(0)
-        sample.add(0, x)
+        sample.insert(0, x)
 
         return sample
 
     def simulateCycle(self):
-        for millisecond in range(800):
+        simSteps = 800  # total of simulation steps TODO: hardcoded. maybe take this is a paramter?
+        for step in range(simSteps):
+            print("simulating heart cycle ... [ sample", step + 1, "of", simSteps, "|", int((step+1)/simSteps*100),
+                  "% completed ]")
             self.simulationSamples.append(self.currentSample())
-            print("Simulating heart cycle. step no.", millisecond)
             self.step()
+
+    def plotSimulation(self):
+        # colormap
+        cmap = colors.ListedColormap(['#2e4a1e', '#00baff', '#000b34', '#fff313', '#7b7b00', '#fcc926', '#bf7600',
+                                      '#FFFFFF', '#E9967A', '#8B0000', '#605acd', '#3e135e', '#A2CD5A'])
+        boundaries = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        norm = colors.BoundaryNorm(boundaries, cmap.N, clip=True)
+
+        # scale image and matrix
+        dx, dy = 0.05, 0.05
+        x = np.arange(0, self.columns, dx)
+        y = np.arange(0, self.rows, dy)
+        X, Y = np.meshgrid(x, y)
+        extent = np.min(X), np.max(X), np.min(Y), np.max(Y)
+
+        # initialize plot
+        # initial settings for plot
+        plt.title("Cellular Automaton of the Heart")
+        plt.axis('off')
+        image = plt.imread("heart.png")  # TODO: what if file could not be read?
+        plt.imshow(image, extent=extent)  # TODO: what if image could not be read?
+        fig = plt.gcf()
+
+        im = plt.imshow(self.simulationSamples[0], extent=extent, cmap=cmap, alpha=0.8)
+
+        def animate(frame):
+            im.set_data(self.simulationSamples[frame])
+            return im
+
+        # actual animation
+        anim = animation.FuncAnimation(fig, animate, frames=800, interval=1)
+        plt.show()
+
+        return
 
     def step(self):  # one step transits the heart simulation 1 time step ahead
 
