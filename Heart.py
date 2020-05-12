@@ -90,9 +90,7 @@ class Heart:
         return sample
 
     def simulateCycle(self):
-
-        # simSteps = 800  # total of simulation steps TODO: hardcoded. maybe take this is a paramter?
-        simSteps = 800
+        simSteps = 600  # total of simulation steps TODO: hardcoded. maybe take this is a paramter?
         timestamp = time.time()
 
         for step in range(simSteps):
@@ -139,7 +137,7 @@ class Heart:
             return im
 
         # actual animation
-        anim = animation.FuncAnimation(fig, animate, frames=800, interval=1)
+        anim = animation.FuncAnimation(fig, animate, frames=600, interval=1)
         plt.show()
 
         return
