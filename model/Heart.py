@@ -15,11 +15,10 @@ class Heart:
         # TODO read count of rows and columns from CSV directly
         self.rows = 49  # the resolution of the y-axis in a carthesian coordinate system
         self.columns = 67  # the resolution of the x-axis in a carthesian coordinate system
-        self.heart = self.init_matrix()
-        # self.visualization = self.createVisualizationMatrix(self.heart)
+        self.heart = self.initialHeartMatrix()
         self.simulationSamples = []
 
-    def init_matrix(self):
+    def initialHeartMatrix(self):
         matrix = []
 
         with open("./resources/heart.csv", 'r') as f:  # TODO filename as function argument
@@ -33,7 +32,7 @@ class Heart:
 
             for j in range(int(self.columns)):  # loop as many times as variable columns
 
-                # TODO replace the if-elif tree by a switcher. Such a switcher already exists in Cell.
+                # TODO replace the if-elif tree by a switcher.
                 if heart[i][j] == '0':
                     no_heart_cell = Cell(Celltype.NO_HEART_CELL)
                     r.append(no_heart_cell)
@@ -82,8 +81,6 @@ class Heart:
         # add the whole color map to sample (plot needs each color present at last once in each sample)
         x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
              7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
-        # sample.pop()
-        # sample.append(x)
         sample.pop(0)
         sample.insert(0, x)
 
@@ -102,12 +99,12 @@ class Heart:
         duration = time.time() - timestamp
         print("simulating heart cycle ... [ complete. (", int(duration/60), "min", int(duration % 60), "sec ) ]")
 
-        # TODO take destination path as a parameter
+        # TODO: take destination path as a parameter
         np.save("./simulations/heart_cycle.npy", self.simulationSamples)
-        # TODO what if file could not be saved? and: files will be overwritten -> ok?
+        # TODO: what if file could not be saved? and: files will be overwritten -> ok?
         filesize = Path("./simulations/heart_cycle.npy").stat().st_size  # file size in bytes
         print("simulating heart cycle ... [ saved samples to file (", "{:.2f}".format(filesize/1000000), "MB ) ]")
-        # TODO compress file (e.g. one test run resulted in a file of 21.01 MB, but 214 kB if zipped)
+        # TODO: compress file (e.g. one test run resulted in a file of 21.01 MB, but 214 kB if zipped)
 
     def plotSimulation(self):
         # colormap
@@ -124,15 +121,16 @@ class Heart:
         extent = np.min(X), np.max(X), np.min(Y), np.max(Y)
 
         # initialize plot
-        # initial settings for plot
         plt.title("Cellular Automaton of the Heart")
         plt.axis('off')
         image = plt.imread("./resources/heart.png")  # TODO: what if file could not be read?
         plt.imshow(image, extent=extent)  # TODO: what if image could not be read?
         fig = plt.gcf()
 
+        # plot the first sample
         im = plt.imshow(self.simulationSamples[0], extent=extent, cmap=cmap, alpha=0.8)
 
+        # inner helper for animation, interates over samples
         def animate(frame):
             im.set_data(self.simulationSamples[frame])
             return im
@@ -141,12 +139,10 @@ class Heart:
         anim = animation.FuncAnimation(fig, animate, frames=600, interval=1)
         plt.show()
 
-        return
-
     def step(self):  # one step transits the heart simulation 1 time step ahead
 
-        for row in range(9,len(self.heart),1):
-            for column in range(13,55,1):
+        for row in range(9, len(self.heart), 1):  # iterate only over rows where cells change their state (efficiency)
+            for column in range(13, 55, 1):  # iterate only over columns where cells change their state (efficiency)
 
                 if self.heart[row][column].celltype == Celltype.HIS_BUNDLE:
                     # trigger if: (1) all AV knots are depolarized and (2) neighbourhood contains an depolarized cell
@@ -169,30 +165,31 @@ class Heart:
         aNeighbourIsDepolarized = False
 
         # neighbourhood: Moore
-        north = row-1 if row-1 in range(len(self.heart)) else row
-        south = row+1 if row+1 in range(len(self.heart)) else row
-        east = column+1 if column+1 in range(len(self.heart[row])) else column
-        west = column-1 if column-1 in range(len(self.heart[row])) else column
+        north = row    - 1 if row    - 1 in range(len(self.heart))      else row
+        south = row    + 1 if row    + 1 in range(len(self.heart))      else row
+        east  = column + 1 if column + 1 in range(len(self.heart[row])) else column
+        west  = column - 1 if column - 1 in range(len(self.heart[row])) else column
 
-        # for all 8 neighbours: check if they are depolirated (if they exist)#
+        # for all 8 neighbours: check if they are depolirated (if they exist)
         if self.heart[north][column].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[north][east].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[row][east].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[south][east].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[north][east]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[row]  [east]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[south][east]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
         if self.heart[south][column].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[south][west].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[row][west].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
-        if self.heart[north][west].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[south][west]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[row]  [west]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
+        if self.heart[north][west]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
 
         return aNeighbourIsDepolarized
 
     def allDepolarized(self, cellytpe):
         allDepolarized = True
 
-        for row in range(21,len(self.heart),1):
-            for column in range(19,53,1):
+        # iterate only over cells where we actually will check on allDepolarized (efficiency)
+        for row in range(21, len(self.heart), 1):
+            for column in range(19, 53, 1):
 
                 if self.heart[row][column].celltype == cellytpe:
-                    if self.heart[row][column].getState() != 3: allDepolarized = False
+                    if self.heart[row][column].getState() != StateName.DEPOLARIZED: allDepolarized = False
 
         return allDepolarized

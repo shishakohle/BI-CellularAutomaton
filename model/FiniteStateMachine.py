@@ -1,11 +1,12 @@
 """
 Cell behaviour may be implemented as a finite-state machine with these characteristics:
-TODO: several changes were made to the FSM design in the videocall on May 6th.
+
     STATES (ST*)
 
     (ST1) POLARIZED
     (ST2) DEPOLARIZING
-    (ST3) REFRACTORY
+    (ST3) DEPOLARIZED
+    (ST4) REFRACTORY
           where (ST1) is the initial state (ST*.init).
 
     STATE VARIABLES (SV*)
@@ -15,51 +16,53 @@ TODO: several changes were made to the FSM design in the videocall on May 6th.
 
     GRADIENT VARIABLES (GV*)
 
-    (GV1) time
+    (GV1) step
     (GV2) isTriggered
 
     CONSTANTS and THRESHOLDS (THR*)
 
-    (THR1) duration_depolarization_phase
-    (THR2) duration_refractory_phase
+    (THR1) duration_depolarizing_phase
+    (THR2) duration_depolarized_phase
+    (THR3) duration_refractory_phase
 
     ON STATE ENTRY (ST*.E*)
     (ST2.E1) (SV1) = (GV1)
     (ST3.E1) (SV1) = (GV1)
+    (ST4.E1) (SV1) = (GV1)
 
     EVENTS indicated by CONDITIONS (EV*)
 
     (EV1) (GV2) == TRUE
     (EV2) age >= (THR1)
-    (EV2) age >= (THR2)
+    (EV3) age >= (THR2)
+    (EV4) age >= (THR3)
           where age = (GV1) - (SV1)
 
     TRANSITIONS (TR*)
 
     (TR1) (ST1)--(EV1)-->(ST2)
     (TR2) (ST2)--(EV2)-->(ST3)
-    (TR3) (ST3)--(EV3)-->(ST1)
-
-See doc for UML notation.
+    (TR3) (ST3)--(EV3)-->(ST4)
+    (TR4) (ST4)--(EV4)-->(ST1)
 """
 
 
 # represent state names as class (as python natively doesn't know enumerations)
 
 class StateName:      # (ST*)
-    POLARIZED = 1     # (ST1)
+    POLARIZED    = 1  # (ST1)
     DEPOLARIZING = 2  # (ST2)
-    DEPOLARIZED = 3   # (ST3)
-    REFRACTORY = 4    # (ST4)
+    DEPOLARIZED  = 3  # (ST3)
+    REFRACTORY   = 4  # (ST4)
 
 
 class FiniteStateMachine:
 
     # set constants and thresholds in constructor, init state machine with initial state
 
-    def __init__(self, duration_depolarization_phase, duration_depolarized_phase,
+    def __init__(self, duration_depolarizing_phase, duration_depolarized_phase,
                  duration_refractory_phase):                                       # (THR*) and (ST*.init)
-        self.duration_depolarization_phase = duration_depolarization_phase         # (THR1)
+        self.duration_depolarizing_phase = duration_depolarizing_phase             # (THR1)
         self.duration_depolarized_phase    = duration_depolarized_phase            # (THR2)
         self.duration_refractory_phase     = duration_refractory_phase             # (THR3)
         self.currentState = self.State()                                           # (ST*.init)
@@ -74,7 +77,6 @@ class FiniteStateMachine:
     # calculate the next state based on the current state and the gradient variables
 
     def refreshState(self, step, isTriggered):                        # (GV*)
-        time = step  # TODO rename all uses of time by step
 
         # check all events (EV*) for an potential transition (TR*)
 
@@ -82,24 +84,24 @@ class FiniteStateMachine:
             if isTriggered:                                           # (EV1)
                 # complete transition by entering new state
                 self.currentState.stateName = StateName.DEPOLARIZING  # (ST2)
-                self.currentState.timestamp = time                    # (ST2.E1)
+                self.currentState.timestamp = step                    # (ST2.E1)
 
         elif self.currentState.stateName == StateName.DEPOLARIZING:   # (TR2): (ST2) --> ?
-            if (time - self.currentState.timestamp) >=\
-                    self.duration_depolarization_phase:               # (EV2)
+            if (step - self.currentState.timestamp) >=\
+                    self.duration_depolarizing_phase:                 # (EV2)
                 # complete transition by entering new state
-                self.currentState.stateName = 3   # (ST3)
-                self.currentState.timestamp = time                    # (ST3.E1)
+                self.currentState.stateName = StateName.DEPOLARIZED   # (ST3)
+                self.currentState.timestamp = step                    # (ST3.E1)
 
         elif self.currentState.stateName == StateName.DEPOLARIZED:    # (TR3): (ST3) --> ?
-            if (time - self.currentState.timestamp) >=\
+            if (step - self.currentState.timestamp) >=\
                     self.duration_depolarized_phase:                  # (EV3)
                 # complete transition by entering new state
                 self.currentState.stateName = StateName.REFRACTORY    # (ST4)
-                self.currentState.timestamp = time                    # (ST4.E1)
+                self.currentState.timestamp = step                    # (ST4.E1)
 
         elif self.currentState.stateName == StateName.REFRACTORY:     # (TR4): (ST4) --> ?
-            if (time - self.currentState.timestamp) >=\
+            if (step - self.currentState.timestamp) >=\
                     self.duration_refractory_phase:                   # (EV4)
                 # complete transition by entering new state
                 self.currentState.stateName = StateName.POLARIZED     # (ST1)
