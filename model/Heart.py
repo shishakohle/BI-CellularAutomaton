@@ -87,7 +87,7 @@ class Heart:
         return sample
 
     def simulateCycle(self):
-        simSteps = 1000  # total of simulation steps TODO: hardcoded. maybe take this is a paramter?
+        simSteps = 1000  # total of simulation steps TODO: hardcoded. maybe take this is a parameter?
         timestamp = time.time()
 
         for step in range(simSteps):
@@ -136,7 +136,7 @@ class Heart:
             return im
 
         # actual animation
-        anim = animation.FuncAnimation(fig, animate, frames=600, interval=1)
+        anim = animation.FuncAnimation(fig, animate, frames=1000, interval=1)
         plt.show()
 
     def step(self):  # one step transits the heart simulation 1 time step ahead
@@ -170,7 +170,7 @@ class Heart:
         east  = column + 1 if column + 1 in range(len(self.heart[row])) else column
         west  = column - 1 if column - 1 in range(len(self.heart[row])) else column
 
-        # for all 8 neighbours: check if they are depolirated (if they exist)
+        # for all 8 neighbours: check if they are depolarized (if they exist)
         if self.heart[north][column].getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
         if self.heart[north][east]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True
         if self.heart[row]  [east]  .getState() == StateName.DEPOLARIZED: aNeighbourIsDepolarized = True

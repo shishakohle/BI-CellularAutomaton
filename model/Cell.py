@@ -78,7 +78,7 @@ class Cell:
         return self.stateMachine.currentState.stateName
 
     def get_color_state(self):
-        if self.getState() == 3:
+        if self.getState() == StateName.DEPOLARIZED:
             return self.color_state_depolarized[self.celltype]
         else:
             return self.color_state_polarized[self.celltype]

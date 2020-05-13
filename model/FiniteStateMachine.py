@@ -62,7 +62,7 @@ class FiniteStateMachine:
 
     def __init__(self, duration_depolarizing_phase, duration_depolarized_phase,
                  duration_refractory_phase):                                       # (THR*) and (ST*.init)
-        self.duration_depolarizing_phase = duration_depolarizing_phase             # (THR1)
+        self.duration_depolarizing_phase   = duration_depolarizing_phase           # (THR1)
         self.duration_depolarized_phase    = duration_depolarized_phase            # (THR2)
         self.duration_refractory_phase     = duration_refractory_phase             # (THR3)
         self.currentState = self.State()                                           # (ST*.init)
