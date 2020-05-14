@@ -3,6 +3,7 @@ from model.Cell import *
 import csv
 import time
 import imageio
+from PIL import Image
 import numpy as np
 from pathlib import Path
 
@@ -131,7 +132,6 @@ class Heart:
         extent = np.min(X), np.max(X), np.min(Y), np.max(Y)
 
         # initialize plot
-        plt.title("Cellular Automaton of the Heart")
         plt.axis('off')
         image = plt.imread("./resources/Conductive System of the Heart_background.png")  # TODO: what if file could not be read?
         plt.imshow(image, extent=extent)  # TODO: what if image could not be read?
@@ -153,6 +153,8 @@ class Heart:
         frames = []
         timestamp = time.time()
 
+        backgroundImage = Image.open('./simulations/GIF_frames/background.png').resize((670, 490)).convert("RGBA")
+
         for i in range(0, len(self.simulationSamples), 20):
 
             print("creating simulation GIF ... [ sample", i + 1, "of", len(self.simulationSamples), "|",
@@ -169,6 +171,11 @@ class Heart:
 
             filename = './simulations/GIF_frames/frame' + str(i) + '.png'  # TODO: create directory if it does not exist
             plt.imsave(filename, resized_image, cmap=Cell.cmap)  # TODO: what if file could not be saved?
+
+            overlay = Image.open(filename).convert("RGBA")
+            full_image = Image.blend(backgroundImage, overlay, 0.8)
+            full_image.save('./simulations/GIF_frames/frame' + str(i) + '.png')
+
             frames.append(imageio.imread(filename))
             # TODO remove file, as it's not needed any longer
 
