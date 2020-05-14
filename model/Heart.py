@@ -8,6 +8,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib.animation as animation
+from PIL import Image
+import imageio
 
 
 class Heart:
@@ -135,8 +137,32 @@ class Heart:
             im.set_data(self.simulationSamples[frame])
             return im
 
+        def createGIF():
+            filenames = []
+
+            for i in range(1, len(self.simulationSamples), 20):
+                image = np.array(self.simulationSamples[i])
+                test = cmap(norm(image))
+                # create new array of zeros, 10 times bigger than actual image array
+                resized_image = np.zeros(np.array(image.shape) * 10)
+
+                # fill resized_image with data of actual image, but resize it 10 times
+                for i in range(image.shape[0]):
+                    for j in range(image.shape[1]):
+                        resized_image[i * 10: (i + 1) * 10, j * 10: (j + 1) * 10] = image[i, j]
+
+                plt.imsave('frames/frame' + str(i) + '.png', resized_image, cmap=cmap)
+                filenames.append('frames/frame' + str(i) + '.png')
+
+                frames = []
+                for filename in filenames:
+                    frames.append(imageio.imread(filename))
+                imageio.mimsave('heart.gif', frames)
+
         # actual animation
         anim = animation.FuncAnimation(fig, animate, frames=1000, interval=1)
+        # createGIF function should not run every time (takes too long) - only used to create a GIF once
+        # createGIF()
         plt.show()
 
     def step(self):  # one step transits the heart simulation 1 time step ahead
