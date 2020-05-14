@@ -147,9 +147,9 @@ class Heart:
                 resized_image = np.zeros(np.array(image.shape) * 10)
 
                 # fill resized_image with data of actual image, but resize it 10 times
-                for i in range(image.shape[0]):
-                    for j in range(image.shape[1]):
-                        resized_image[i * 10: (i + 1) * 10, j * 10: (j + 1) * 10] = image[i, j]
+                for j in range(image.shape[0]):
+                    for k in range(image.shape[1]):
+                        resized_image[j * 10: (j + 1) * 10, k * 10: (k + 1) * 10] = image[j, k]
 
                 plt.imsave('frames/frame' + str(i) + '.png', resized_image, cmap=cmap)
                 filenames.append('frames/frame' + str(i) + '.png')
