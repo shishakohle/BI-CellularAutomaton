@@ -74,15 +74,35 @@ class Heart:
             r = []  # create a row list
 
             for j in range(int(self.columns)):  # loop as many times as variable columns
-                r.append(self.heart[i][j].get_color_state())
+                # add the whole color map to sample (plot needs each color present at last once in each sample)
+                if(i == 6 and j == 49): # sine node
+                    r.append(10)
+                elif (i == 6 and j == 50):
+                    r.append(11)
+                elif (i == 8 and j == 49): # AV node
+                    r.append(12)
+                elif (i == 8 and j == 50):
+                    r.append(0)
+                elif (i == 10 and j == 49): # his bundle
+                    r.append(1)
+                elif (i == 10 and j == 50):
+                    r.append(2)
+                elif (i == 12 and j == 49): # bundle branches
+                    r.append(3)
+                elif (i == 12 and j == 50):
+                    r.append(3)
+                elif (i == 14 and j == 49): # purkinje
+                    r.append(5)
+                elif (i == 14 and j == 50):
+                    r.append(6)
+                elif (i == 16 and j == 49): # muscle cells
+                    r.append(8)
+                elif (i == 16 and j == 50):
+                    r.append(9)
+                else:
+                    r.append(self.heart[i][j].get_color_state())
 
             sample.append(r)
-
-        # add the whole color map to sample (plot needs each color present at last once in each sample)
-        x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-             7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
-        sample.pop(0)
-        sample.insert(0, x)
 
         return sample
 
@@ -123,12 +143,12 @@ class Heart:
         # initialize plot
         plt.title("Cellular Automaton of the Heart")
         plt.axis('off')
-        image = plt.imread("./resources/heart.png")  # TODO: what if file could not be read?
+        image = plt.imread("./resources/Conductive System of the Heart_background.png")  # TODO: what if file could not be read?
         plt.imshow(image, extent=extent)  # TODO: what if image could not be read?
         fig = plt.gcf()
 
         # plot the first sample
-        im = plt.imshow(self.simulationSamples[0], extent=extent, cmap=cmap, alpha=0.8)
+        im = plt.imshow(self.simulationSamples[0], extent=extent, cmap=cmap, alpha=0.6)
 
         # inner helper for animation, interates over samples
         def animate(frame):
