@@ -1,5 +1,7 @@
 from model.FiniteStateMachine import *
 
+import matplotlib.colors as colors
+
 
 # represent celltypes as class (as python natively doesn't know enumerations)
 class Celltype:
@@ -15,6 +17,10 @@ class Celltype:
 
 
 class Cell:
+
+    # colors used to indicate cells and their state
+    cmap = colors.ListedColormap(['#2e4a1e', '#00baff', '#000b34', '#fff313', '#7b7b00', '#fcc926', '#bf7600',
+                                  '#FFFFFF', '#E9967A', '#8B0000', '#605acd', '#3e135e', '#A2CD5A'])
 
     # associate each celltype with a color that indicates the cell is polarized
     color_state_polarized = {

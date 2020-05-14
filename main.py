@@ -19,4 +19,5 @@ from model.Heart import Heart
 
 heart = Heart()
 heart.simulateCycle()
+heart.createSimulationGIF()
 heart.plotSimulation()

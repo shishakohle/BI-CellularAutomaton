@@ -2,14 +2,13 @@ from model.Cell import *
 
 import csv
 import time
+import imageio
 import numpy as np
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib.animation as animation
-from PIL import Image
-import imageio
 
 
 class Heart:
@@ -114,18 +113,15 @@ class Heart:
         print("simulating heart cycle ... [ complete. (", int(duration/60), "min", int(duration % 60), "sec ) ]")
 
         # TODO: take destination path as a parameter
-        np.save("./simulations/heart_cycle.npy", self.simulationSamples)
+        np.save("./simulations/heart_cycle.npy", self.simulationSamples)    # TODO: create directory if it does not exist
         # TODO: what if file could not be saved? and: files will be overwritten -> ok?
         filesize = Path("./simulations/heart_cycle.npy").stat().st_size  # file size in bytes
         print("simulating heart cycle ... [ saved samples to file (", "{:.2f}".format(filesize/1000000), "MB ) ]")
         # TODO: compress file (e.g. one test run resulted in a file of 21.01 MB, but 214 kB if zipped)
 
     def plotSimulation(self):
-        # colormap
-        cmap = colors.ListedColormap(['#2e4a1e', '#00baff', '#000b34', '#fff313', '#7b7b00', '#fcc926', '#bf7600',
-                                      '#FFFFFF', '#E9967A', '#8B0000', '#605acd', '#3e135e', '#A2CD5A'])
         boundaries = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-        norm = colors.BoundaryNorm(boundaries, cmap.N, clip=True)
+        norm = colors.BoundaryNorm(boundaries, Cell.cmap.N, clip=True)
 
         # scale image and matrix
         dx, dy = 0.05, 0.05
@@ -142,40 +138,50 @@ class Heart:
         fig = plt.gcf()
 
         # plot the first sample
-        im = plt.imshow(self.simulationSamples[0], extent=extent, cmap=cmap, alpha=0.6)
+        im = plt.imshow(self.simulationSamples[0], extent=extent, cmap=Cell.cmap, alpha=0.6)
 
         # inner helper for animation, interates over samples
         def animate(frame):
             im.set_data(self.simulationSamples[frame])
             return im
 
-        def createGIF():
-            filenames = []
-
-            for i in range(1, len(self.simulationSamples), 20):
-                image = np.array(self.simulationSamples[i])
-                test = cmap(norm(image))
-                # create new array of zeros, 10 times bigger than actual image array
-                resized_image = np.zeros(np.array(image.shape) * 10)
-
-                # fill resized_image with data of actual image, but resize it 10 times
-                for j in range(image.shape[0]):
-                    for k in range(image.shape[1]):
-                        resized_image[j * 10: (j + 1) * 10, k * 10: (k + 1) * 10] = image[j, k]
-
-                plt.imsave('frames/frame' + str(i) + '.png', resized_image, cmap=cmap)
-                filenames.append('frames/frame' + str(i) + '.png')
-
-                frames = []
-                for filename in filenames:
-                    frames.append(imageio.imread(filename))
-                imageio.mimsave('heart.gif', frames)
-
         # actual animation
-        anim = animation.FuncAnimation(fig, animate, frames=1000, interval=1)
-        # createGIF function should not run every time (takes too long) - only used to create a GIF once
-        # createGIF()
+        anim = animation.FuncAnimation(fig, animate, frames=len(self.simulationSamples), interval=1)
         plt.show()
+
+    def createSimulationGIF(self):
+        frames = []
+        timestamp = time.time()
+
+        for i in range(0, len(self.simulationSamples), 20):
+
+            print("creating simulation GIF ... [ sample", i + 1, "of", len(self.simulationSamples), "|",
+                  int((i + 1) / len(self.simulationSamples) * 100), "% complete ]")
+
+            image = np.array(self.simulationSamples[i])
+            # create new array of zeros, 10 times bigger than actual image array
+            resized_image = np.zeros(np.array(image.shape) * 10)
+
+            # fill resized_image with data of actual image, but resize it 10 times
+            for j in range(image.shape[0]):
+                for k in range(image.shape[1]):
+                    resized_image[j * 10: (j + 1) * 10, k * 10: (k + 1) * 10] = image[j, k]
+
+            filename = './simulations/GIF_frames/frame' + str(i) + '.png'  # TODO: create directory if it does not exist
+            plt.imsave(filename, resized_image, cmap=Cell.cmap)  # TODO: what if file could not be saved?
+            frames.append(imageio.imread(filename))
+            # TODO remove file, as it's not needed any longer
+
+        # TODO remove gif frame directory, as it's not needed any longer
+
+        duration = time.time() - timestamp
+        print("creating simulation GIF ... [ complete. (", int(duration/60), "min", int(duration % 60), "sec ) ]")
+
+        # TODO: take destination path as a parameter
+        imageio.mimsave('./simulations/heart_simulation.gif', frames)
+        # TODO: what if file could not be saved? and: files will be overwritten -> ok?
+        filesize = Path('./simulations/heart_simulation.gif').stat().st_size  # file size in bytes
+        print("creating simulation GIF ... [ saved GIF to file (", "heart_simulation.gif", ", {:.2f}".format(filesize / 1000), "kB ) ]")
 
     def step(self):  # one step transits the heart simulation 1 time step ahead
 
