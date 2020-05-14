@@ -2,6 +2,10 @@
 A graphical model for the excitation propagation at the myocardium,
 implemented as a Cellular Automaton in Python.
 
+<p align="center">
+  <img src="simulations/heart_simulation.gif" width="450">
+</p>
+
 Written by Anna Friedl, Kerstin Pegler and Ingo Weigel.
 
 May 13th, 2020
