@@ -181,7 +181,8 @@ class Heart:
         imageio.mimsave('./simulations/heart_simulation.gif', frames)
         # TODO: what if file could not be saved? and: files will be overwritten -> ok?
         filesize = Path('./simulations/heart_simulation.gif').stat().st_size  # file size in bytes
-        print("creating simulation GIF ... [ saved GIF to file (", "heart_simulation.gif", ", {:.2f}".format(filesize / 1000), "kB ) ]")
+        print("creating simulation GIF ... [ saved GIF to file (", "heart_simulation.gif",
+              ", {:.2f}".format(filesize / 1000000), "MB ) ]")
 
     def step(self):  # one step transits the heart simulation 1 time step ahead
 
