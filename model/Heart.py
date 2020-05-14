@@ -76,35 +76,27 @@ class Heart:
             r = []  # create a row list
 
             for j in range(int(self.columns)):  # loop as many times as variable columns
-                # add the whole color map to sample (plot needs each color present at last once in each sample)
-                if(i == 6 and j == 49): # sine node
-                    r.append(10)
-                elif (i == 6 and j == 50):
-                    r.append(11)
-                elif (i == 8 and j == 49): # AV node
-                    r.append(12)
-                elif (i == 8 and j == 50):
-                    r.append(0)
-                elif (i == 10 and j == 49): # his bundle
-                    r.append(1)
-                elif (i == 10 and j == 50):
-                    r.append(2)
-                elif (i == 12 and j == 49): # bundle branches
-                    r.append(3)
-                elif (i == 12 and j == 50):
-                    r.append(3)
-                elif (i == 14 and j == 49): # purkinje
-                    r.append(5)
-                elif (i == 14 and j == 50):
-                    r.append(6)
-                elif (i == 16 and j == 49): # muscle cells
-                    r.append(8)
-                elif (i == 16 and j == 50):
-                    r.append(9)
-                else:
-                    r.append(self.heart[i][j].get_color_state())
+                r.append(self.heart[i][j].get_color_state())
 
             sample.append(r)
+
+        # add the whole color map to sample (plot needs each color present at last once in each sample)
+        # --> we'll exploit this circumstance as a plot legend indicating the celltypes by color
+
+        def drawLegend(celltype, positionX, positionY):
+            row = sample.pop(positionY)
+            row.pop(positionX)
+            row.insert(positionX, Cell.color_state_polarized[celltype])
+            row.pop(positionX+1)
+            row.insert(positionX+1, Cell.color_state_depolarized[celltype])
+            sample.insert(positionY, row)
+
+        drawLegend(Celltype.SINUS_KNOT, 49, 6 )  # draw legend for sine knot
+        drawLegend(Celltype.AV_KNOT   , 49, 8 )  # draw legend for AV node
+        drawLegend(Celltype.HIS_BUNDLE, 49, 10)  # draw legend for his bundle
+        drawLegend(Celltype.TAWARA    , 49, 12)  # draw legend for tawara (bundle branches)
+        drawLegend(Celltype.PURKINJE  , 49, 14)  # draw legend for purkinje fibres
+        drawLegend(Celltype.MYOKARD   , 49, 16)  # draw legend for muscle cells
 
         return sample
 
