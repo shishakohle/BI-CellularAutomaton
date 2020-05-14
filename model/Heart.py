@@ -1,6 +1,7 @@
 from model.Cell import *
 
 import csv
+import os
 import time
 import imageio
 from PIL import Image
@@ -133,7 +134,7 @@ class Heart:
 
         # initialize plot
         plt.axis('off')
-        image = plt.imread("./resources/Conductive System of the Heart_background.png")  # TODO: what if file could not be read?
+        image = plt.imread("./resources/conductive_system_heart_background.png")  # TODO: what if file could not be read?
         plt.imshow(image, extent=extent)  # TODO: what if image could not be read?
         fig = plt.gcf()
 
@@ -153,7 +154,12 @@ class Heart:
         frames = []
         timestamp = time.time()
 
-        backgroundImage = Image.open('./simulations/GIF_frames/background.png').resize((670, 490)).convert("RGBA")
+        backgroundImage = Image.open('./resources/conductive_system_heart_background.png').resize((670, 490)).convert("RGBA")
+        frameDirectory = "./simulations/GIF_frames"
+        gifDestinationPath = "./simulations/heart_simulation.gif"
+
+        if not os.path.isdir(frameDirectory): # create frameDirectory if it does not exist
+            os.makedirs(frameDirectory)
 
         for i in range(0, len(self.simulationSamples), 20):
 
@@ -162,30 +168,29 @@ class Heart:
 
             image = np.array(self.simulationSamples[i])
             # create new array of zeros, 10 times bigger than actual image array
-            resized_image = np.zeros(np.array(image.shape) * 10)
+            resizedImage = np.zeros(np.array(image.shape) * 10)
 
             # fill resized_image with data of actual image, but resize it 10 times
             for j in range(image.shape[0]):
                 for k in range(image.shape[1]):
-                    resized_image[j * 10: (j + 1) * 10, k * 10: (k + 1) * 10] = image[j, k]
+                    resizedImage[j * 10: (j + 1) * 10, k * 10: (k + 1) * 10] = image[j, k]
 
-            filename = './simulations/GIF_frames/frame' + str(i) + '.png'  # TODO: create directory if it does not exist
-            plt.imsave(filename, resized_image, cmap=Cell.cmap)  # TODO: what if file could not be saved?
+            filename = './simulations/GIF_frames/frame' + str(i) + '.png'
+            plt.imsave(filename, resizedImage, cmap=Cell.cmap)  # TODO: what if file could not be saved?
 
             overlay = Image.open(filename).convert("RGBA")
-            full_image = Image.blend(backgroundImage, overlay, 0.8)
-            full_image.save('./simulations/GIF_frames/frame' + str(i) + '.png')
+            fullImage = Image.blend(backgroundImage, overlay, 0.8)
+            fullImage.save(filename)
 
             frames.append(imageio.imread(filename))
-            # TODO remove file, as it's not needed any longer
+            os.remove(filename)  # remove file, as it's not needed any longer
 
-        # TODO remove gif frame directory, as it's not needed any longer
+        os.rmdir(frameDirectory) # remove gif frame directory, as it's not needed any longer
 
         duration = time.time() - timestamp
         print("creating simulation GIF ... [ complete. (", int(duration/60), "min", int(duration % 60), "sec ) ]")
 
-        # TODO: take destination path as a parameter
-        imageio.mimsave('./simulations/heart_simulation.gif', frames)
+        imageio.mimsave( gifDestinationPath, frames)
         # TODO: what if file could not be saved? and: files will be overwritten -> ok?
         filesize = Path('./simulations/heart_simulation.gif').stat().st_size  # file size in bytes
         print("creating simulation GIF ... [ saved GIF to file (", "heart_simulation.gif",
